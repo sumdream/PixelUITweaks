@@ -1,0 +1,4 @@
+name: PixelUITweaks
+version: @version@
+main: PixelUITweaksServer
+authors: [TimmyOVO]
