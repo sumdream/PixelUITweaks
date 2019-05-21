@@ -1,5 +1,8 @@
 package com.github.timmyovo.pixeluitweaks.client;
 
+import com.github.timmyovo.pixeluitweaks.client.hook.ClientHook;
+import com.github.timmyovo.pixeluitweaks.client.texture.DownloadTextureManager;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -15,6 +18,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
         name = PixelUITweaks.MOD_NAME,
         version = PixelUITweaks.VERSION
 )
+@Getter
 public class PixelUITweaks {
 
     public static final String MOD_ID = "pixeluitweaks";
@@ -27,13 +31,18 @@ public class PixelUITweaks {
     @Mod.Instance(MOD_ID)
     public static PixelUITweaks INSTANCE;
 
+    private ClientHook clientHook;
+
+    private DownloadTextureManager downloadTextureManager;
+
     /**
      * This is the first initialization event. Register tile entities here.
      * The registry events below will have fired prior to entry to this method.
      */
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
-
+        this.downloadTextureManager = new DownloadTextureManager().init();
+        this.clientHook = new ClientHook();
     }
 
     /**

@@ -27,5 +27,5 @@ public class ComponentListContent extends AbstractComponent {
     @SerializedName("overlayY")
     private int overlayY;
     @SerializedName("contents")
-    private List<ComponentListContent> contents;
+    private List<AbstractComponent> contents;
 }

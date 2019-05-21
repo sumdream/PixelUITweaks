@@ -24,8 +24,8 @@ public class AbstractComponent {
     private int height;
     @SerializedName("width")
     private int width;
-    @SerializedName("viable")
-    private boolean viable;
+    @SerializedName("visible")
+    private boolean visible;
     @SerializedName("renderMethod")
     private RenderMethod renderMethod;
     @SerializedName("textureBinder")

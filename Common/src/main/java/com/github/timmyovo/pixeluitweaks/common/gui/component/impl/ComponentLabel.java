@@ -16,6 +16,8 @@ public class ComponentLabel extends AbstractComponent {
     protected boolean visible;
     @SerializedName("textColor")
     protected int textColor;
+    @SerializedName("border")
+    private int border;
     @SerializedName("labels")
     private List<String> labels;
 }

@@ -19,7 +19,7 @@ public class IDownloadTexture {
         texture = load(bufferedImage);
     }
 
-    private int load(BufferedImage bufferedImage) {
+    public int load(BufferedImage bufferedImage) {
         int[] pixels = null;
         width = bufferedImage.getWidth();
         height = bufferedImage.getHeight();
