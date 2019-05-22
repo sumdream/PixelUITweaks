@@ -15,6 +15,6 @@ public class PacketInCloseScreen implements IPacketOut {
 
     @Override
     public String getPacketType() {
-        return PacketInTypes.PacketInCloseScreen.name();
+        return PacketInTypes.CloseScreen.name();
     }
 }

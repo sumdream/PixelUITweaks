@@ -11,10 +11,15 @@ import net.minecraft.network.PacketBuffer;
 public class PacketInOpenScreen implements IPacketIn {
     @Override
     public void readPacket(PacketBuffer packetBuffer) {
-        String containerString = packetBuffer.readString(Short.MAX_VALUE);
-        ComponentContainer componentContainer = GuiFactory.fromString(containerString, ComponentContainer.class);
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
-        CommonUIScreen slotUIScreen = new CommonUIScreen(player, componentContainer);
-        Minecraft.getMinecraft().displayGuiScreen(slotUIScreen);
+        Minecraft.getMinecraft().addScheduledTask(() -> {
+            System.out.println(Thread.currentThread().getName());
+            String containerString = packetBuffer.readString(Short.MAX_VALUE);
+            ComponentContainer componentContainer = GuiFactory.fromString(containerString, ComponentContainer.class);
+            Minecraft minecraft = Minecraft.getMinecraft();
+            EntityPlayerSP player = minecraft.player;
+            CommonUIScreen slotUIScreen = new CommonUIScreen(player, componentContainer);
+            minecraft.displayGuiScreen(slotUIScreen);
+        });
+
     }
 }

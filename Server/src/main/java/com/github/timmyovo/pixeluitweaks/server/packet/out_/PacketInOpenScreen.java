@@ -20,6 +20,6 @@ public class PacketInOpenScreen implements IPacketOut {
 
     @Override
     public String getPacketType() {
-        return PacketInTypes.PacketInOpenScreen.name();
+        return PacketInTypes.OpenScreen.name();
     }
 }

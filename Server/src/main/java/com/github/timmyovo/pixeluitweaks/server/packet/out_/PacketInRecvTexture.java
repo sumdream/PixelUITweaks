@@ -38,6 +38,6 @@ public class PacketInRecvTexture implements IPacketOut {
 
     @Override
     public String getPacketType() {
-        return PacketInTypes.PacketInRecvTexture.name();
+        return PacketInTypes.RecvTexture.name();
     }
 }

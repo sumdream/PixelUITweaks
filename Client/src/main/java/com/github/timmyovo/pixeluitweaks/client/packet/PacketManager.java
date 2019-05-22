@@ -53,12 +53,12 @@ public class PacketManager implements IComp<PacketManager> {
 
     @Override
     public PacketManager init() {
-        registerPacketIn(PacketInTypes.PacketInAddContainer.name(), new PacketInAddContainer());
-        registerPacketIn(PacketInTypes.PacketInCloseScreen.name(), new PacketInCloseScreen());
-        registerPacketIn(PacketInTypes.PacketInOpenContainerScreen.name(), new PacketInOpenContainerScreen());
-        registerPacketIn(PacketInTypes.PacketInOpenScreen.name(), new PacketInOpenScreen());
-        registerPacketIn(PacketInTypes.PacketInRecvTexture.name(), new PacketInRecvTexture());
-        registerPacketIn(PacketInTypes.PacketInRemoveContainer.name(), new PacketInRemoveContainer());
+        registerPacketIn(PacketInTypes.AddContainer.name(), new PacketInAddContainer());
+        registerPacketIn(PacketInTypes.CloseScreen.name(), new PacketInCloseScreen());
+        registerPacketIn(PacketInTypes.OpenContainerScreen.name(), new PacketInOpenContainerScreen());
+        registerPacketIn(PacketInTypes.OpenScreen.name(), new PacketInOpenScreen());
+        registerPacketIn(PacketInTypes.RecvTexture.name(), new PacketInRecvTexture());
+        registerPacketIn(PacketInTypes.RemoveContainer.name(), new PacketInRemoveContainer());
         return this;
     }
 }

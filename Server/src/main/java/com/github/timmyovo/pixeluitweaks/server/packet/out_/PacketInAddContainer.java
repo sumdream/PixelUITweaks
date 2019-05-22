@@ -15,11 +15,11 @@ public class PacketInAddContainer implements IPacketOut {
 
     @Override
     public void writePacket(PacketDataSerializer packetBuffer) {
-        packetBuffer.a(GuiFactory.GSON.toJson(packetBuffer));
+        packetBuffer.a(GuiFactory.GSON.toJson(componentContainer));
     }
 
     @Override
     public String getPacketType() {
-        return PacketInTypes.PacketInAddContainer.name();
+        return PacketInTypes.AddContainer.name();
     }
 }

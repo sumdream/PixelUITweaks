@@ -21,6 +21,6 @@ public class PacketInRemoveContainer implements IPacketOut {
 
     @Override
     public String getPacketType() {
-        return PacketInTypes.PacketInRemoveContainer.name();
+        return PacketInTypes.RemoveContainer.name();
     }
 }

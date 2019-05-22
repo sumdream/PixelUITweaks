@@ -73,6 +73,7 @@ public class CommonUIScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
+
         for (ComponentContainer container : containers) {
             if (container.getTextureBinder() != null) {
                 TextureUtils.tryBindTexture(container.getTextureBinder());
@@ -84,8 +85,6 @@ public class CommonUIScreen extends GuiScreen {
                     drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
                 }
             }
-        }
-        for (ComponentContainer container : containers) {
             for (AbstractComponent abstractComponent : container.getComponentList()) {
                 if (!(abstractComponent instanceof ComponentSlot)) {
                     clientComponents.forEach(clientComponent -> {
@@ -117,14 +116,8 @@ public class CommonUIScreen extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         clientComponents.stream()
-                .filter(iServerGuiBase -> iServerGuiBase instanceof GuiButtonImpl)
-                .map(iServerGuiBase -> ((GuiButtonImpl) iServerGuiBase))
-                .filter(guiButton -> guiButton.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
-                .forEach(guiButton -> guiButton.mouseReleased(mouseX, mouseY));
-        clientComponents.stream()
-                .filter(iServerGuiBase -> iServerGuiBase instanceof GuiTextFieldImpl)
-                .map(iServerGuiBase -> ((GuiTextFieldImpl) iServerGuiBase))
-                .forEach(guiTextfield -> guiTextfield.setFocused(guiTextfield.mouseClicked(mouseX, mouseY, mouseButton)));
+                .filter(clientComponent -> clientComponent.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
+                .forEach(clientComponent -> clientComponent.mouseReleased(mouseX, mouseY));
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 

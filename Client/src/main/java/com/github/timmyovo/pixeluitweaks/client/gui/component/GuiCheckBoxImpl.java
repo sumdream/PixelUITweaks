@@ -22,6 +22,7 @@ public class GuiCheckBoxImpl extends GuiButtonImpl implements ClientComponent {
         this.y = componentCheckBox.getYPos();
         this.displayString = componentCheckBox.getDisplayString();
         this.boxWidth = componentCheckBox.getBoxWidth();
+        this.visible = componentCheckBox.isVisible();
     }
 
     @Override
@@ -31,13 +32,24 @@ public class GuiCheckBoxImpl extends GuiButtonImpl implements ClientComponent {
             GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, this.x, this.y, 0, 46, this.boxWidth, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
             int color = 14737632;
 
+
             if (packedFGColour != 0) {
                 color = packedFGColour;
             }
             if (this.isChecked)
-                this.drawCenteredString(mc.fontRenderer, "√", this.x + this.boxWidth / 2 + 1, this.y + 1, 14737632);
+                this.drawCenteredString(mc.fontRenderer, "√", this.x + this.boxWidth / 2, this.y + 3, 14737632);
 
             this.drawString(mc.fontRenderer, displayString, this.x + this.boxWidth + 2, this.y + 2, color);
         }
+    }
+
+    @Override
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+        return this.visible && mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+    }
+
+    @Override
+    public void mouseReleased(int mouseX, int mouseY) {
+        this.isChecked = !isChecked;
     }
 }
