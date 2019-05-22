@@ -27,4 +27,6 @@ public interface ClientComponent {
     default ContentHover getHoverContent() {
         return null;
     }
+
+
 }

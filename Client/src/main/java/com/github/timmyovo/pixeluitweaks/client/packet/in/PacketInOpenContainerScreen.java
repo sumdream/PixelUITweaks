@@ -19,6 +19,7 @@ public class PacketInOpenContainerScreen implements IPacketIn {
             SlotUIScreen slotUIScreen = new SlotUIScreen(player, componentContainer);
             Minecraft.getMinecraft().displayGuiScreen(slotUIScreen);
             player.openContainer.windowId = windowId;
+            System.out.println(windowId);
         });
     }
 }

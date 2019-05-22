@@ -2,12 +2,16 @@ package com.github.timmyovo.pixeluitweaks.server.packet;
 
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
+import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
+import com.github.timmyovo.pixeluitweaks.server.container.CommonContainer;
 import com.github.timmyovo.pixeluitweaks.server.packet.out_.*;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PacketManager implements IComp<PacketManager> {
     public void openScreen(Player player, ComponentContainer componentContainer) {
@@ -18,7 +22,17 @@ public class PacketManager implements IComp<PacketManager> {
 
     public void openContainerScreen(Player player, ComponentContainer componentContainer) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        PacketInOpenContainerScreen packetInOpenContainerScreen = new PacketInOpenContainerScreen(handle.nextContainerCounter(), componentContainer);
+        int windowId = handle.nextContainerCounter();
+        handle.r();
+        List<ComponentSlot> collect = componentContainer.getComponentList()
+                .stream()
+                .filter(abstractComponent -> abstractComponent instanceof ComponentSlot)
+                .map(abstractComponent -> ((ComponentSlot) abstractComponent))
+                .collect(Collectors.toList());
+        handle.activeContainer = new CommonContainer(collect, handle);
+        handle.activeContainer.windowId = windowId;
+        handle.activeContainer.addSlotListener(handle);
+        PacketInOpenContainerScreen packetInOpenContainerScreen = new PacketInOpenContainerScreen(windowId, componentContainer);
         packetInOpenContainerScreen.sendPacket(handle);
     }
 

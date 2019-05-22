@@ -8,12 +8,15 @@ import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentChec
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
-import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.LocalTextureBinder;
+import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetworkTextureBinder;
 import com.github.timmyovo.pixeluitweaks.server.packet.PacketManager;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,6 +45,11 @@ public final class PixelUITweaksServer extends JavaPlugin {
                 .addAlias("ui")
                 .withCommandSpecExecutor((commandSender, strings) -> {
                     PacketManager module = getModule(PacketManager.class);
+                    try {
+                        module.sendTextureToPlayer(((Player) commandSender), "test.png", ImageIO.read(new File("./test.png")));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     module.openContainerScreen(((Player) commandSender), ComponentContainer.builder()
                             .width(256)
                             .height(256)
@@ -69,22 +77,22 @@ public final class PixelUITweaksServer extends JavaPlugin {
                                             .withYPos(8)
                                             .withHeight(16)
                                             .withWidth(16)
-                                            .withSlotIndex(0)
+                                            .withSlotIndex(100)
                                             .build()
                             ))
-                            .textureBinder(LocalTextureBinder.newBuilder()
-                                    .withTexturePath("textures/gui/options_background.png")
+                            .textureBinder(DynamicNetworkTextureBinder.newBuilder()
+                                    .withNetworkTextureName("test.png")
                                     .build())
                             .renderMethod(RenderMethod.builder()
                                     .entryList(Collections.singletonList(RenderMethod.RenderEntry.builder()
-                                            .xOffset(0)
-                                            .yOffset(0)
-                                            .scaledHeight(256)
-                                            .scaledWidth(256)
+                                            .xOffset(88)
+                                            .yOffset(139)
+                                            .scaledHeight(220)
+                                            .scaledWidth(175)
                                             .textureHeight(256)
                                             .textureWidth(256)
                                             .textureX(0)
-                                            .textureHeight(0)
+                                            .textureY(0)
                                             .build()))
                                     .build())
                             .build());
