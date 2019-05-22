@@ -36,6 +36,10 @@ configurations {
     shade
     compile.extendsFrom shade
 }
+configurations.all {
+    transitive = false
+}
+
 
 repositories {
     mavenCentral()
@@ -43,10 +47,12 @@ repositories {
 
 dependencies {
     shade project(path: ':Common', configuration: 'default')
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
 }
 
 jar {
-    configurations.compile.each { dep ->
+    configurations.shade.each { dep ->
         from(project.zipTree(dep)){
             exclude 'META-INF', 'META-INF/**'
             exclude 'dummyThing'

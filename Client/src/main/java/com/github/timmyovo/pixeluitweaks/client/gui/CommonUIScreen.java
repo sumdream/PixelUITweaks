@@ -36,6 +36,15 @@ public class CommonUIScreen extends GuiScreen {
 
     public void addContainer(ComponentContainer componentContainer) {
         this.containers.add(componentContainer);
+        updateClientComponents();
+    }
+
+    public void removeContainer(ComponentContainer componentContainer) {
+        this.containers.remove(componentContainer);
+        updateClientComponents();
+    }
+
+    public void updateClientComponents() {
         this.clientComponents = new ArrayList<>();
         for (ComponentContainer container : this.containers) {
             List<AbstractComponent> content = container.getComponentList();
@@ -65,10 +74,15 @@ public class CommonUIScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         for (ComponentContainer container : containers) {
-            TextureUtils.tryBindTexture(container.getTextureBinder());
-            RenderMethod renderMethod = container.getRenderMethod();
-            for (RenderMethod.RenderEntry renderEntry : renderMethod.getEntryList()) {
-                drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
+            if (container.getTextureBinder() != null) {
+                TextureUtils.tryBindTexture(container.getTextureBinder());
+            }
+
+            if (container.getRenderMethod() != null) {
+                RenderMethod renderMethod = container.getRenderMethod();
+                for (RenderMethod.RenderEntry renderEntry : renderMethod.getEntryList()) {
+                    drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
+                }
             }
         }
         for (ComponentContainer container : containers) {

@@ -8,20 +8,52 @@ targetCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
-    mavenCentral()
     maven {
-        name = 'spigotmc-repo'
-        url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
+        url "https://work.ymmclt.com/nexus/repository/maven-central/"
     }
     maven {
-        name = 'sonatype'
-        url = 'https://oss.sonatype.org/content/groups/public/'
+        url "https://work.ymmclt.com/nexus/repository/spigot/"
+    }
+    maven {
+        url "https://work.ymmclt.com/nexus/repository/nexus/"
+    }
+    maven {
+        url "https://work.ymmclt.com/nexus/repository/maven-public/"
+    }
+    maven {
+        url "https://work.ymmclt.com/nexus/repository/placeholderapi/"
+    }
+    maven {
+        url "https://work.ymmclt.com/nexus/repository/hackerzlair/"
     }
 }
 
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+configurations.all {
+    transitive = false
+}
+
+
+
 dependencies {
-    compile project(path: ':Common', configuration: 'default')
-    compile 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    shade project(path: ':Common', configuration: 'default')
+    implementation group: 'com.github.skystardust', name: 'UltraCore-Bukkit', version: '4.4-SNAPSHOT'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    compile fileTree(dir: "libs", includes: ["*.jar"])
+}
+
+jar {
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+            exclude 'dummyThing'
+        }
+    }
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

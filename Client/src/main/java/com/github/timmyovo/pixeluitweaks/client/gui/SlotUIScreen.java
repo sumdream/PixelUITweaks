@@ -49,6 +49,15 @@ public class SlotUIScreen extends GuiContainer {
 
     public void addContainer(ComponentContainer componentContainer) {
         this.containers.add(componentContainer);
+        updateClientComponents();
+    }
+
+    public void removeContainer(ComponentContainer componentContainer) {
+        this.containers.remove(componentContainer);
+        updateClientComponents();
+    }
+
+    public void updateClientComponents() {
         this.clientComponents = new ArrayList<>();
         for (ComponentContainer container : this.containers) {
             List<AbstractComponent> content = container.getComponentList();
@@ -73,6 +82,7 @@ public class SlotUIScreen extends GuiContainer {
             });
         }
     }
+
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {

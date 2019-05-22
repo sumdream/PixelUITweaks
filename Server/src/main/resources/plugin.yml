@@ -1,4 +1,4 @@
 name: PixelUITweaks
 version: @version@
-main: PixelUITweaksServer
+main: com.github.timmyovo.pixeluitweaks.server.PixelUITweaksServer
 authors: [TimmyOVO]

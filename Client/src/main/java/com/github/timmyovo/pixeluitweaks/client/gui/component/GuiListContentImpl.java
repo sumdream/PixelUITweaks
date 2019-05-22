@@ -306,7 +306,7 @@ public class GuiListContentImpl extends Gui implements ClientComponent {
     }
 
     /**
-     * Stop the thing from scrolling out of bounds
+     * Stop the thing from scrolling out_ of bounds
      */
     protected void bindAmountScrolled() {
         this.amountScrolled = MathHelper.clamp(this.amountScrolled, 0.0F, (float) this.getMaxScroll());

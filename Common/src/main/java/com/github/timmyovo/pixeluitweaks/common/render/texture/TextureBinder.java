@@ -6,5 +6,4 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class TextureBinder {
-    private String type;
 }

@@ -5,12 +5,15 @@ import com.github.timmyovo.pixeluitweaks.client.PixelUITweaks;
 import com.github.timmyovo.pixeluitweaks.client.gui.container.CommonContainer;
 import com.github.timmyovo.pixeluitweaks.client.texture.IDownloadTexture;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
+import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
+import com.github.timmyovo.pixeluitweaks.common.packet.PacketInTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 import javax.imageio.ImageIO;
@@ -46,6 +49,9 @@ public class ClientHook implements IComp<ClientHook> {
 
     @Override
     public ClientHook init() {
+        for (PacketInTypes value : PacketInTypes.values()) {
+            NetworkRegistry.INSTANCE.newEventDrivenChannel(value.name()).register(PixelUITweaks.INSTANCE.getPacketManager());
+        }
         return this;
     }
 

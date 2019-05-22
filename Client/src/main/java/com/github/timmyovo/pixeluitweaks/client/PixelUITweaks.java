@@ -1,6 +1,7 @@
 package com.github.timmyovo.pixeluitweaks.client;
 
 import com.github.timmyovo.pixeluitweaks.client.hook.ClientHook;
+import com.github.timmyovo.pixeluitweaks.client.packet.PacketManager;
 import com.github.timmyovo.pixeluitweaks.client.texture.DownloadTextureManager;
 import lombok.Getter;
 import net.minecraft.block.Block;
@@ -35,14 +36,17 @@ public class PixelUITweaks {
 
     private DownloadTextureManager downloadTextureManager;
 
+    private PacketManager packetManager;
+
     /**
      * This is the first initialization event. Register tile entities here.
      * The registry events below will have fired prior to entry to this method.
      */
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
+        this.packetManager = new PacketManager().init();
         this.downloadTextureManager = new DownloadTextureManager().init();
-        this.clientHook = new ClientHook();
+        this.clientHook = new ClientHook().init();
     }
 
     /**

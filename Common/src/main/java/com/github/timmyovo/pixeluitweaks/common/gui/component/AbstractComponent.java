@@ -11,25 +11,23 @@ import java.util.UUID;
 
 @Setter
 @Getter
-public class AbstractComponent {
+public abstract class AbstractComponent {
     @SerializedName("componentId")
-    private UUID componentId;
-    @SerializedName("type")
-    private String type;
+    protected UUID componentId;
     @SerializedName("xPos")
-    private int xPos;
+    protected int xPos;
     @SerializedName("yPos")
-    private int yPos;
+    protected int yPos;
     @SerializedName("height")
-    private int height;
+    protected int height;
     @SerializedName("width")
-    private int width;
+    protected int width;
     @SerializedName("visible")
-    private boolean visible;
+    protected boolean visible;
     @SerializedName("renderMethod")
-    private RenderMethod renderMethod;
+    protected RenderMethod renderMethod;
     @SerializedName("textureBinder")
-    private TextureBinder textureBinder;
+    protected TextureBinder textureBinder;
     @SerializedName("contentHover")
-    private ContentHover contentHover;
+    protected ContentHover contentHover;
 }
