@@ -73,7 +73,8 @@ public class CommonUIScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-
+        int x = this.width / 2;
+        int i = this.height / 2;
         for (ComponentContainer container : containers) {
             if (container.getTextureBinder() != null) {
                 TextureUtils.tryBindTexture(container.getTextureBinder());
@@ -81,8 +82,9 @@ public class CommonUIScreen extends GuiScreen {
 
             if (container.getRenderMethod() != null) {
                 RenderMethod renderMethod = container.getRenderMethod();
+
                 for (RenderMethod.RenderEntry renderEntry : renderMethod.getEntryList()) {
-                    drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
+                    drawModalRectWithCustomSizedTexture(x - renderEntry.getXOffset(), i - renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
                 }
             }
             for (AbstractComponent abstractComponent : container.getComponentList()) {

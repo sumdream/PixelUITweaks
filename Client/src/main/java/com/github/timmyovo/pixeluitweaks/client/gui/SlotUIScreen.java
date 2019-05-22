@@ -91,6 +91,8 @@ public class SlotUIScreen extends GuiContainer {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        int x = this.width / 2;
+        int i = this.height / 2;
         for (ComponentContainer container : containers) {
             if (container.getTextureBinder() != null) {
                 TextureUtils.tryBindTexture(container.getTextureBinder());
@@ -99,8 +101,7 @@ public class SlotUIScreen extends GuiContainer {
             if (container.getRenderMethod() != null) {
                 RenderMethod renderMethod = container.getRenderMethod();
                 for (RenderMethod.RenderEntry renderEntry : renderMethod.getEntryList()) {
-                    int x = this.width / 2;
-                    int i = this.height / 2;
+
                     drawModalRectWithCustomSizedTexture(x - renderEntry.getXOffset(), i - renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
                 }
             }

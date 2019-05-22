@@ -9,6 +9,7 @@ import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetworkTextureBinder;
+import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
 import com.github.timmyovo.pixeluitweaks.server.packet.PacketManager;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -62,6 +63,9 @@ public final class PixelUITweaksServer extends JavaPlugin {
                                     .withYPos(10)
                                             .build(),
                                     ComponentCheckBox.newBuilder()
+                                            .withTextureBinder(WebTextureBinder.newBuilder()
+                                                    .withUrl("https://www.baidu.com")
+                                                    .build())
                                             .withVisible(true)
                                             .withBoxWidth(16)
                                             .withXPos(64)
