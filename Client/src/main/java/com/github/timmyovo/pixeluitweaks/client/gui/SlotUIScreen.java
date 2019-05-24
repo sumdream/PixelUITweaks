@@ -138,14 +138,8 @@ public class SlotUIScreen extends GuiContainer {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         clientComponents.stream()
-                .filter(iServerGuiBase -> iServerGuiBase instanceof GuiButtonImpl)
-                .map(iServerGuiBase -> ((GuiButtonImpl) iServerGuiBase))
-                .filter(guiButton -> guiButton.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
-                .forEach(guiButton -> guiButton.mouseReleased(mouseX, mouseY));
-        clientComponents.stream()
-                .filter(iServerGuiBase -> iServerGuiBase instanceof GuiTextFieldImpl)
-                .map(iServerGuiBase -> ((GuiTextFieldImpl) iServerGuiBase))
-                .forEach(guiTextfield -> guiTextfield.setFocused(guiTextfield.mouseClicked(mouseX, mouseY, mouseButton)));
+                .filter(clientComponent -> clientComponent.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
+                .forEach(clientComponent -> clientComponent.mouseReleased(mouseX, mouseY));
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 

@@ -495,6 +495,11 @@ public class GuiListContentImpl extends Gui implements ClientComponent<Component
         }
     }
 
+    @Override
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+        return false;
+    }
+
     public void handleMouseInput() {
         if (this.isMouseYWithinSlotBounds(this.mouseY)) {
             if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() && this.mouseY >= this.top && this.mouseY <= this.bottom) {
