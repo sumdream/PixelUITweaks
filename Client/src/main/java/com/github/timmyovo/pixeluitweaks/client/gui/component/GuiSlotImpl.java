@@ -8,7 +8,11 @@ import net.minecraft.client.gui.Gui;
 
 @Getter
 @Setter
-public class GuiSlotImpl extends Gui implements ClientComponent {
+public class GuiSlotImpl extends Gui implements ClientComponent<ComponentSlot> {
     private ComponentSlot componentSlot;
 
+    @Override
+    public void updateComponent(ComponentSlot componentModel) {
+
+    }
 }

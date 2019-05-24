@@ -17,23 +17,24 @@ public class ComponentListContent extends AbstractComponent {
     @SerializedName("slotHeight")
     public int slotHeight;
     @SerializedName("top")
-    public int top;
+    public String top;
     @SerializedName("bottom")
-    public int bottom;
+    public String bottom;
     @SerializedName("right")
-    public int right;
+    public String right;
     @SerializedName("left")
-    public int left;
+    public String left;
     @SerializedName("headerPadding")
     public int headerPadding;
     @SerializedName("scrollbarX")
-    private int scrollbarX;
+    private String scrollbarX;
     @SerializedName("overlayY")
-    private int overlayY;
+    private String overlayY;
     @SerializedName("contents")
     private List<AbstractComponent> contents;
 
     private ComponentListContent(Builder builder) {
+        setComponentId(builder.componentId);
         xPos = builder.xPos;
         yPos = builder.yPos;
         setHeight(builder.height);
@@ -59,43 +60,49 @@ public class ComponentListContent extends AbstractComponent {
     }
 
     public static final class Builder {
-        private int xPos;
-        private int yPos;
-        private int height;
-        private int width;
+        private UUID componentId;
+        private String xPos;
+        private String yPos;
+        private String height;
+        private String width;
         private boolean visible;
         private RenderMethod renderMethod;
         private TextureBinder textureBinder;
         private ContentHover contentHover;
         private int slotHeight;
-        private int top;
-        private int bottom;
-        private int right;
-        private int left;
+        private String top;
+        private String bottom;
+        private String right;
+        private String left;
         private int headerPadding;
-        private int scrollbarX;
-        private int overlayY;
+        private String scrollbarX;
+        private String overlayY;
         private List<AbstractComponent> contents;
 
         private Builder() {
         }
 
-        public Builder withXPos(int val) {
+        public Builder withComponentId(UUID val) {
+            componentId = val;
+            return this;
+        }
+
+        public Builder withXPos(String val) {
             xPos = val;
             return this;
         }
 
-        public Builder withYPos(int val) {
+        public Builder withYPos(String val) {
             yPos = val;
             return this;
         }
 
-        public Builder withHeight(int val) {
+        public Builder withHeight(String val) {
             height = val;
             return this;
         }
 
-        public Builder withWidth(int val) {
+        public Builder withWidth(String val) {
             width = val;
             return this;
         }
@@ -125,22 +132,22 @@ public class ComponentListContent extends AbstractComponent {
             return this;
         }
 
-        public Builder withTop(int val) {
+        public Builder withTop(String val) {
             top = val;
             return this;
         }
 
-        public Builder withBottom(int val) {
+        public Builder withBottom(String val) {
             bottom = val;
             return this;
         }
 
-        public Builder withRight(int val) {
+        public Builder withRight(String val) {
             right = val;
             return this;
         }
 
-        public Builder withLeft(int val) {
+        public Builder withLeft(String val) {
             left = val;
             return this;
         }
@@ -150,12 +157,12 @@ public class ComponentListContent extends AbstractComponent {
             return this;
         }
 
-        public Builder withScrollbarX(int val) {
+        public Builder withScrollbarX(String val) {
             scrollbarX = val;
             return this;
         }
 
-        public Builder withOverlayY(int val) {
+        public Builder withOverlayY(String val) {
             overlayY = val;
             return this;
         }

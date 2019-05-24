@@ -9,16 +9,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.math.MathHelper;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 @Getter
 @Setter
-public class GuiTextFieldImpl extends Gui implements ClientComponent {
+public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTextField> {
     public int x;
     public int y;
     /**
@@ -63,19 +65,48 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent {
 
     public GuiTextFieldImpl(ComponentTextField componentTextField) {
         this.componentTextField = componentTextField;
-        this.x = componentTextField.getXPos();
-        this.y = componentTextField.getYPos();
-        this.width = componentTextField.getWidth();
-        this.height = componentTextField.getHeight();
-        this.text = componentTextField.getText();
-        this.maxStringLength = componentTextField.getMaxStringLength();
-        this.enableBackgroundDrawing = componentTextField.isEnableBackgroundDrawing();
-        this.canLoseFocus = componentTextField.isCanLoseFocus();
+        updateComponent(componentTextField);
     }
 
     @Override
     public void render(int mouseX, int mouseY, float ticks) {
         drawTextBox();
+    }
+
+    @Override
+    public void updateComponent(ComponentTextField componentModel) {
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution scaledResolution = new ScaledResolution(mc);
+        int scaledHeight = scaledResolution.getScaledHeight();
+        int scaledWidth = scaledResolution.getScaledWidth();
+        this.width = (int) new ExpressionBuilder(componentModel.getWidth())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.height = (int) new ExpressionBuilder(componentModel.getHeight())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.x = (int) new ExpressionBuilder(componentModel.getXPos())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.y = (int) new ExpressionBuilder(componentModel.getYPos())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.text = componentModel.getText();
+        this.maxStringLength = componentModel.getMaxStringLength();
+        this.enableBackgroundDrawing = componentModel.isEnableBackgroundDrawing();
+        this.canLoseFocus = componentModel.isCanLoseFocus();
     }
 
 

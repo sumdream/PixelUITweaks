@@ -49,6 +49,8 @@ dependencies {
     shade project(path: ':Common', configuration: 'default')
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+    compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
+
 }
 
 jar {

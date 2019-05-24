@@ -15,13 +15,13 @@ public abstract class AbstractComponent {
     @SerializedName("componentId")
     protected UUID componentId;
     @SerializedName("xPos")
-    protected int xPos;
+    protected String xPos;
     @SerializedName("yPos")
-    protected int yPos;
+    protected String yPos;
     @SerializedName("height")
-    protected int height;
+    protected String height;
     @SerializedName("width")
-    protected int width;
+    protected String width;
     @SerializedName("visible")
     protected boolean visible;
     @SerializedName("renderMethod")

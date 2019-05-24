@@ -32,7 +32,7 @@ public class CommonContainer extends Container {
     }
 
     public Slot toMinecraftSlot(ComponentSlot componentSlot) {
-        return new Slot(entityPlayer.inventory, componentSlot.getSlotIndex(), componentSlot.getXPos(), componentSlot.getYPos());
+        return new Slot(entityPlayer.inventory, componentSlot.getSlotIndex(), componentSlot.getSlotX(), componentSlot.getSlotY());
     }
 
 

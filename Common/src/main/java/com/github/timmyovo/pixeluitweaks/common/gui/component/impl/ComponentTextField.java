@@ -23,6 +23,7 @@ public class ComponentTextField extends AbstractComponent {
     protected boolean canLoseFocus;
 
     private ComponentTextField(Builder builder) {
+        setComponentId(builder.componentId);
         xPos = builder.xPos;
         yPos = builder.yPos;
         setHeight(builder.height);
@@ -43,10 +44,11 @@ public class ComponentTextField extends AbstractComponent {
     }
 
     public static final class Builder {
-        private int xPos;
-        private int yPos;
-        private int height;
-        private int width;
+        private UUID componentId;
+        private String xPos;
+        private String yPos;
+        private String height;
+        private String width;
         private boolean visible;
         private RenderMethod renderMethod;
         private TextureBinder textureBinder;
@@ -59,22 +61,27 @@ public class ComponentTextField extends AbstractComponent {
         private Builder() {
         }
 
-        public Builder withXPos(int val) {
+        public Builder withComponentId(UUID val) {
+            componentId = val;
+            return this;
+        }
+
+        public Builder withXPos(String val) {
             xPos = val;
             return this;
         }
 
-        public Builder withYPos(int val) {
+        public Builder withYPos(String val) {
             yPos = val;
             return this;
         }
 
-        public Builder withHeight(int val) {
+        public Builder withHeight(String val) {
             height = val;
             return this;
         }
 
-        public Builder withWidth(int val) {
+        public Builder withWidth(String val) {
             width = val;
             return this;
         }

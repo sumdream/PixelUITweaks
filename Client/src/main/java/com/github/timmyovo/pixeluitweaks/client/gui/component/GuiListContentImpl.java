@@ -8,11 +8,13 @@ import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class GuiListContentImpl extends Gui implements ClientComponent {
+public class GuiListContentImpl extends Gui implements ClientComponent<ComponentListContent> {
     /**
      * The height of a slot.
      */
@@ -86,38 +88,7 @@ public class GuiListContentImpl extends Gui implements ClientComponent {
 
     public GuiListContentImpl(ComponentListContent componentListContent) {
         this.componentListContent = componentListContent;
-        this.mc = Minecraft.getMinecraft();
-        this.slotHeight = componentListContent.getSlotHeight();
-        this.width = componentListContent.getWidth();
-        this.height = componentListContent.getHeight();
-        this.top = componentListContent.getTop();
-        this.bottom = componentListContent.getBottom();
-        this.right = componentListContent.getRight();
-        this.left = componentListContent.getLeft();
-        this.headerPadding = componentListContent.getHeaderPadding();
-        this.visible = componentListContent.isVisible();
-        this.scrollbarX = componentListContent.getScrollbarX();
-        this.overlayY = componentListContent.getOverlayY();
-        this.clientComponents = new ArrayList<>();
-        this.componentListContent.getContents().forEach(abstractComponent -> {
-            if (abstractComponent instanceof ComponentButton) {
-                clientComponents.add(new GuiButtonImpl(((ComponentButton) abstractComponent)));
-                return;
-            }
-            if (abstractComponent instanceof ComponentLabel) {
-                clientComponents.add(new GuiLabelImpl(((ComponentLabel) abstractComponent)));
-                return;
-            }
-            if (abstractComponent instanceof ComponentPicture) {
-                clientComponents.add(new GuiPictureImpl(((ComponentPicture) abstractComponent)));
-            }
-            if (abstractComponent instanceof ComponentCheckBox) {
-                clientComponents.add(new GuiCheckBoxImpl(((ComponentCheckBox) abstractComponent)));
-            }
-            if (abstractComponent instanceof ComponentTextField) {
-                clientComponents.add(new GuiTextFieldImpl(((ComponentTextField) abstractComponent)));
-            }
-        });
+        updateComponent(componentListContent);
     }
 
     public void setDimensions(int widthIn, int heightIn, int topIn, int bottomIn) {
@@ -359,6 +330,87 @@ public class GuiListContentImpl extends Gui implements ClientComponent {
     @Override
     public void render(int mouseX, int mouseY, float ticks) {
         drawScreen(mouseX, mouseY, ticks);
+    }
+
+    @Override
+    public void updateComponent(ComponentListContent componentModel) {
+        Minecraft minecraft = Minecraft.getMinecraft();
+        this.mc = minecraft;
+        ScaledResolution scaledResolution = new ScaledResolution(minecraft);
+        int scaledHeight = scaledResolution.getScaledHeight();
+        int scaledWidth = scaledResolution.getScaledWidth();
+
+        this.slotHeight = componentListContent.getSlotHeight();
+        this.width = (int) new ExpressionBuilder(componentModel.getWidth())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.height = (int) new ExpressionBuilder(componentModel.getHeight())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.top = (int) new ExpressionBuilder(componentModel.getTop())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.bottom = (int) new ExpressionBuilder(componentModel.getBottom())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.right = (int) new ExpressionBuilder(componentModel.getRight())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.left = (int) new ExpressionBuilder(componentModel.getLeft())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.headerPadding = componentListContent.getHeaderPadding();
+        this.visible = componentListContent.isVisible();
+        this.scrollbarX = (int) new ExpressionBuilder(componentModel.getScrollbarX())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.overlayY = (int) new ExpressionBuilder(componentModel.getOverlayY())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.clientComponents = new ArrayList<>();
+        this.componentListContent.getContents().forEach(abstractComponent -> {
+            if (abstractComponent instanceof ComponentButton) {
+                clientComponents.add(new GuiButtonImpl(((ComponentButton) abstractComponent)));
+                return;
+            }
+            if (abstractComponent instanceof ComponentLabel) {
+                clientComponents.add(new GuiLabelImpl(((ComponentLabel) abstractComponent)));
+                return;
+            }
+            if (abstractComponent instanceof ComponentPicture) {
+                clientComponents.add(new GuiPictureImpl(((ComponentPicture) abstractComponent)));
+            }
+            if (abstractComponent instanceof ComponentCheckBox) {
+                clientComponents.add(new GuiCheckBoxImpl(((ComponentCheckBox) abstractComponent)));
+            }
+            if (abstractComponent instanceof ComponentTextField) {
+                clientComponents.add(new GuiTextFieldImpl(((ComponentTextField) abstractComponent)));
+            }
+        });
     }
 
     public void drawScreen(int mouseXIn, int mouseYIn, float partialTicks) {

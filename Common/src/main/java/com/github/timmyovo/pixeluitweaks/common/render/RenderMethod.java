@@ -22,9 +22,9 @@ public class RenderMethod {
     @Builder
     public static class RenderEntry {
         @SerializedName("xOffset")
-        private int xOffset;
+        private String xOffset;
         @SerializedName("yOffset")
-        private int yOffset;
+        private String yOffset;
         @SerializedName("textureX")
         private int textureX;
         @SerializedName("textureY")
@@ -34,8 +34,8 @@ public class RenderMethod {
         @SerializedName("textureHeight")
         private int textureHeight;
         @SerializedName("scaledWidth")
-        private int scaledWidth;
+        private String scaledWidth;
         @SerializedName("scaledHeight")
-        private int scaledHeight;
+        private String scaledHeight;
     }
 }

@@ -1,20 +1,22 @@
 package com.github.timmyovo.pixeluitweaks.client.gui.component;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
+import com.github.timmyovo.pixeluitweaks.client.gui.ClientRenderMethod;
 import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButton;
-import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 @Getter
 @Setter
-public class GuiButtonImpl extends Gui implements ClientComponent {
+public class GuiButtonImpl extends Gui implements ClientComponent<ComponentButton> {
     protected static final ResourceLocation BUTTON_TEXTURES = new ResourceLocation("textures/gui/widgets.png");
     /**
      * Button width in pixels
@@ -45,18 +47,14 @@ public class GuiButtonImpl extends Gui implements ClientComponent {
     protected boolean hovered;
     private ComponentButton componentButton;
 
+    private ClientRenderMethod clientRenderMethod;
+
     public GuiButtonImpl() {
     }
 
     public GuiButtonImpl(ComponentButton componentButton) {
         this.componentButton = componentButton;
-        this.mc = Minecraft.getMinecraft();
-        this.width = componentButton.getWidth();
-        this.height = componentButton.getHeight();
-        this.x = componentButton.getXPos();
-        this.y = componentButton.getYPos();
-        this.displayString = componentButton.getDisplayString();
-        this.visible = componentButton.isVisible();
+        updateComponent(componentButton);
     }
 
     /**
@@ -83,7 +81,7 @@ public class GuiButtonImpl extends Gui implements ClientComponent {
                 TextureUtils.tryBindTexture(componentButton.getTextureBinder());
             }
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = mouseX >= this.componentButton.getXPos() && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            this.hovered = mouseX >= x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             int i = this.getHoverState(this.hovered);
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -92,8 +90,7 @@ public class GuiButtonImpl extends Gui implements ClientComponent {
                 this.drawTexturedModalRect(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
                 this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
             } else {
-                RenderMethod renderMethod = componentButton.getRenderMethod();
-                for (RenderMethod.RenderEntry renderEntry : renderMethod.getEntryList()) {
+                for (ClientRenderMethod.ClientRenderEntry renderEntry : clientRenderMethod.getEntryList()) {
                     drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
                 }
             }
@@ -107,5 +104,43 @@ public class GuiButtonImpl extends Gui implements ClientComponent {
 
             this.drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
         }
+    }
+
+    @Override
+    public void updateComponent(ComponentButton componentModel) {
+        this.mc = Minecraft.getMinecraft();
+        ScaledResolution scaledResolution = new ScaledResolution(mc);
+        int scaledHeight = scaledResolution.getScaledHeight();
+        int scaledWidth = scaledResolution.getScaledWidth();
+
+        this.width = (int) new ExpressionBuilder(componentModel.getWidth())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.height = (int) new ExpressionBuilder(componentModel.getHeight())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.x = (int) new ExpressionBuilder(componentModel.getXPos())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        this.y = (int) new ExpressionBuilder(componentModel.getYPos())
+                .variables("w", "h")
+                .build()
+                .setVariable("w", scaledWidth)
+                .setVariable("h", scaledHeight)
+                .evaluate();
+        if (componentModel.getRenderMethod() != null) {
+            this.clientRenderMethod = ClientRenderMethod.fromRenderMethod(componentModel.getRenderMethod());
+        }
+        this.displayString = componentButton.getDisplayString();
+        this.visible = componentButton.isVisible();
     }
 }

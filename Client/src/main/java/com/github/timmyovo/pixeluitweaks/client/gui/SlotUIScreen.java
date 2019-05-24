@@ -7,7 +7,6 @@ import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.*;
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
-import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,13 +24,15 @@ import java.util.stream.Collectors;
 
 public class SlotUIScreen extends GuiContainer {
     private EntityPlayer owner;
-    private List<ComponentContainer> containers;
+    private List<ClientComponentContainer> containers;
     private List<ClientComponent> clientComponents;
 
     public SlotUIScreen(EntityPlayer entityPlayer, ComponentContainer... guiContainers) {
         super(null);
         this.owner = entityPlayer;
-        this.containers = Arrays.stream(guiContainers).collect(Collectors.toList());
+        this.containers = Arrays.stream(guiContainers)
+                .map(ClientComponentContainer::from)
+                .collect(Collectors.toList());
         this.inventorySlots = new CommonContainer(
                 Arrays.stream(guiContainers)
                         .map(ComponentContainer::getComponentList)
@@ -50,22 +51,24 @@ public class SlotUIScreen extends GuiContainer {
     @Override
     public void setWorldAndResolution(Minecraft mc, int width, int height) {
         super.setWorldAndResolution(mc, width, height);
+        updateClientComponents();
     }
 
     public void addContainer(ComponentContainer componentContainer) {
-        this.containers.add(componentContainer);
+        this.containers.add(ClientComponentContainer.from(componentContainer));
         updateClientComponents();
     }
 
     public void removeContainer(ComponentContainer componentContainer) {
-        this.containers.remove(componentContainer);
+        this.containers.removeIf(c -> c.getComponentContainer().equals(componentContainer));
         updateClientComponents();
     }
 
     public void updateClientComponents() {
         this.clientComponents = new ArrayList<>();
-        for (ComponentContainer container : this.containers) {
-            List<AbstractComponent> content = container.getComponentList();
+        for (ClientComponentContainer container : this.containers) {
+            List<AbstractComponent> content = container.getComponentContainer().getComponentList();
+            container.setClientRenderMethod(ClientRenderMethod.fromRenderMethod(container.getComponentContainer().getRenderMethod()));
             content.forEach(abstractComponent -> {
                 if (abstractComponent instanceof ComponentButton) {
                     clientComponents.add(new GuiButtonImpl(((ComponentButton) abstractComponent)));
@@ -91,21 +94,18 @@ public class SlotUIScreen extends GuiContainer {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        int x = this.width / 2;
-        int i = this.height / 2;
-        for (ComponentContainer container : containers) {
-            if (container.getTextureBinder() != null) {
-                TextureUtils.tryBindTexture(container.getTextureBinder());
+        for (ClientComponentContainer container : containers) {
+            if (container.getComponentContainer().getTextureBinder() != null) {
+                TextureUtils.tryBindTexture(container.getComponentContainer().getTextureBinder());
             }
 
-            if (container.getRenderMethod() != null) {
-                RenderMethod renderMethod = container.getRenderMethod();
-                for (RenderMethod.RenderEntry renderEntry : renderMethod.getEntryList()) {
-
-                    drawModalRectWithCustomSizedTexture(x - renderEntry.getXOffset(), i - renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
+            if (container.getComponentContainer().getRenderMethod() != null) {
+                ClientRenderMethod renderMethod = container.getClientRenderMethod();
+                for (ClientRenderMethod.ClientRenderEntry renderEntry : renderMethod.getEntryList()) {
+                    drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
                 }
             }
-            for (AbstractComponent abstractComponent : container.getComponentList()) {
+            for (AbstractComponent abstractComponent : container.getComponentContainer().getComponentList()) {
                 if (!(abstractComponent instanceof ComponentSlot)) {
                     clientComponents.forEach(clientComponent -> {
                         clientComponent.render(mouseX, mouseY, partialTicks);

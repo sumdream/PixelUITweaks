@@ -16,7 +16,11 @@ public class ComponentSlot extends AbstractComponent {
     @SerializedName("slotIndex")
     private int slotIndex;
 
+    private int slotX;
+    private int slotY;
+
     private ComponentSlot(Builder builder) {
+        setComponentId(builder.componentId);
         xPos = builder.xPos;
         yPos = builder.yPos;
         setHeight(builder.height);
@@ -26,6 +30,8 @@ public class ComponentSlot extends AbstractComponent {
         setTextureBinder(builder.textureBinder);
         setContentHover(builder.contentHover);
         setSlotIndex(builder.slotIndex);
+        setSlotX(builder.slotX);
+        setSlotY(builder.slotY);
         setComponentId(UUID.randomUUID());
     }
 
@@ -34,35 +40,43 @@ public class ComponentSlot extends AbstractComponent {
     }
 
     public static final class Builder {
-        private int xPos;
-        private int yPos;
-        private int height;
-        private int width;
+        private UUID componentId;
+        private String xPos;
+        private String yPos;
+        private String height;
+        private String width;
         private boolean visible;
         private RenderMethod renderMethod;
         private TextureBinder textureBinder;
         private ContentHover contentHover;
         private int slotIndex;
+        private int slotX;
+        private int slotY;
 
         private Builder() {
         }
 
-        public Builder withXPos(int val) {
+        public Builder withComponentId(UUID val) {
+            componentId = val;
+            return this;
+        }
+
+        public Builder withXPos(String val) {
             xPos = val;
             return this;
         }
 
-        public Builder withYPos(int val) {
+        public Builder withYPos(String val) {
             yPos = val;
             return this;
         }
 
-        public Builder withHeight(int val) {
+        public Builder withHeight(String val) {
             height = val;
             return this;
         }
 
-        public Builder withWidth(int val) {
+        public Builder withWidth(String val) {
             width = val;
             return this;
         }
@@ -89,6 +103,16 @@ public class ComponentSlot extends AbstractComponent {
 
         public Builder withSlotIndex(int val) {
             slotIndex = val;
+            return this;
+        }
+
+        public Builder withSlotX(int val) {
+            slotX = val;
+            return this;
+        }
+
+        public Builder withSlotY(int val) {
+            slotY = val;
             return this;
         }
 

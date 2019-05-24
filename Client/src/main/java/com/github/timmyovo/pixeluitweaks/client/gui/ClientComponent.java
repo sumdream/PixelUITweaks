@@ -1,10 +1,11 @@
 package com.github.timmyovo.pixeluitweaks.client.gui;
 
+import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 
-public interface ClientComponent {
+public interface ClientComponent<T extends AbstractComponent> {
     default void render(int mouseX, int mouseY, float ticks) {
 
     }
@@ -28,5 +29,5 @@ public interface ClientComponent {
         return null;
     }
 
-
+    void updateComponent(T componentModel);
 }
