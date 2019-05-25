@@ -20,6 +20,11 @@ public class SidebarManager {
 
     }
 
+    public static void clear() {
+        sidebarModels.clear();
+        sidebarList.clear();
+    }
+
     public static void updateClientModels() {
         sidebarModels.clear();
         sidebarModels.forEach(SidebarManager::addSidebar);

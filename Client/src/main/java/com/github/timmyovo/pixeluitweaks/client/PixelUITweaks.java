@@ -2,6 +2,7 @@ package com.github.timmyovo.pixeluitweaks.client;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.overlay.GuiInGameOverlay;
 import com.github.timmyovo.pixeluitweaks.client.hook.ClientHook;
+import com.github.timmyovo.pixeluitweaks.client.hook.EventListener;
 import com.github.timmyovo.pixeluitweaks.client.packet.PacketManager;
 import com.github.timmyovo.pixeluitweaks.client.texture.DownloadTextureManager;
 import lombok.Getter;
@@ -50,6 +51,7 @@ public class PixelUITweaks {
         this.downloadTextureManager = new DownloadTextureManager().init();
         this.clientHook = new ClientHook().init();
         MinecraftForge.EVENT_BUS.register(new GuiInGameOverlay());
+        MinecraftForge.EVENT_BUS.register(new EventListener());
     }
 
     /**
