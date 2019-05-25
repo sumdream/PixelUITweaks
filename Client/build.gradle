@@ -8,10 +8,12 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
     }
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: 'com.github.johnrengelman.shadow'
 
 version = modVersion
 group = modGroup
@@ -31,36 +33,47 @@ minecraft {
     mappings = project.mcpVersion
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
-
-configurations {
-    shade
-    compile.extendsFrom shade
-}
 configurations.all {
     transitive = false
 }
 
+configurations {
+    shadow
+    compile.extendsFrom shadow
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    shade project(path: ':Common', configuration: 'default')
+    shadow project(path: ':Common', configuration: 'default')
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
-    compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
+    shadow group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
 
 }
 
-jar {
-    configurations.shade.each { dep ->
-        from(project.zipTree(dep)){
-            exclude 'META-INF', 'META-INF/**'
-            exclude 'dummyThing'
-        }
+shadowJar {
+    relocate 'net.objecthunter.exp4j', 'com.github.timmyovo.pixeluitweaks.common.math'
+    classifier ''
+    dependencies {
+        exclude(dependency(group: 'org.projectlombok', name: 'lombok', version: '1.18.8'))
+        exclude(dependency(group: 'com.google.code.gson', name: 'gson', version: '2.8.5'))
     }
 }
+
+
+reobf {
+    shadowJar { mappingType = 'SEARGE' }
+}
+
+tasks.build.dependsOn reobfShadowJar
+
+artifacts {
+    archives shadowJar
+}
+
 
 processResources {
     // this will ensure that this task is redone when the versions change.

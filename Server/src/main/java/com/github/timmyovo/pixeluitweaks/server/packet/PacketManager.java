@@ -3,6 +3,7 @@ package com.github.timmyovo.pixeluitweaks.server.packet;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
+import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.Sidebar;
 import com.github.timmyovo.pixeluitweaks.server.container.CommonContainer;
 import com.github.timmyovo.pixeluitweaks.server.packet.out_.*;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
@@ -58,6 +59,12 @@ public class PacketManager implements IComp<PacketManager> {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
         PacketInRecvTexture packetInRecvTexture = new PacketInRecvTexture(name, bufferedImage);
         packetInRecvTexture.sendPacket(handle);
+    }
+
+    public void sendListContent(Player player, Sidebar sidebar) {
+        EntityPlayer handle = ((CraftPlayer) player).getHandle();
+        PacketOutListContent packetOutListContent = new PacketOutListContent(sidebar);
+        packetOutListContent.sendPacket(handle);
     }
 
     @Override

@@ -59,6 +59,7 @@ public class PacketManager implements IComp<PacketManager> {
         registerPacketIn(PacketInTypes.OpenScreen.name(), new PacketInOpenScreen());
         registerPacketIn(PacketInTypes.RecvTexture.name(), new PacketInRecvTexture());
         registerPacketIn(PacketInTypes.RemoveContainer.name(), new PacketInRemoveContainer());
+        registerPacketIn(PacketInTypes.UpdateOverlayContent.name(), new PacketUpdateOverlayListContent());
         return this;
     }
 }

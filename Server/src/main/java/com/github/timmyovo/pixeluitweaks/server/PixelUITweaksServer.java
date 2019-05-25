@@ -7,6 +7,8 @@ import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButt
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentCheckBox;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
+import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.Sidebar;
+import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.SidebarType;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetworkTextureBinder;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
@@ -51,6 +53,13 @@ public final class PixelUITweaksServer extends JavaPlugin {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    module.sendListContent(((Player) commandSender), Sidebar.builder()
+                            .sidebarType(SidebarType.ADD)
+                            .name("sss")
+                            .strings(Arrays.asList("str1", "str2", "欧舒丹的那就开始的v白色的接口v八十端口v"))
+                            .xOffset("-(w /2)")
+                            .yOffset("- (h / 8)")
+                            .build());
                     module.openContainerScreen(((Player) commandSender), ComponentContainer.builder()
                             .width(256)
                             .height(256)
@@ -91,8 +100,8 @@ public final class PixelUITweaksServer extends JavaPlugin {
                                     .entryList(Collections.singletonList(RenderMethod.RenderEntry.builder()
                                             .xOffset(" w / 2 - 120 ")
                                             .yOffset("h / 2 + 30")
-                                            .scaledHeight("220 * h * 0.1")
-                                            .scaledWidth("175 * w * 0.33")
+                                            .scaledHeight("220")
+                                            .scaledWidth("175")
                                             .textureHeight(256)
                                             .textureWidth(256)
                                             .textureX(0)

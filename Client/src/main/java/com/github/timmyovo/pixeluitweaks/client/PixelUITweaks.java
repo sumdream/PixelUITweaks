@@ -1,11 +1,13 @@
 package com.github.timmyovo.pixeluitweaks.client;
 
+import com.github.timmyovo.pixeluitweaks.client.gui.overlay.GuiInGameOverlay;
 import com.github.timmyovo.pixeluitweaks.client.hook.ClientHook;
 import com.github.timmyovo.pixeluitweaks.client.packet.PacketManager;
 import com.github.timmyovo.pixeluitweaks.client.texture.DownloadTextureManager;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -47,6 +49,7 @@ public class PixelUITweaks {
         this.packetManager = new PacketManager().init();
         this.downloadTextureManager = new DownloadTextureManager().init();
         this.clientHook = new ClientHook().init();
+        MinecraftForge.EVENT_BUS.register(new GuiInGameOverlay());
     }
 
     /**
