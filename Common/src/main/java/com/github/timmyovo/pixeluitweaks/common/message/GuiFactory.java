@@ -1,5 +1,7 @@
 package com.github.timmyovo.pixeluitweaks.common.message;
 
+import com.github.timmyovo.pixeluitweaks.common.api.ISerializable;
+import com.github.timmyovo.pixeluitweaks.common.event.*;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.GuiComponents;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.*;
@@ -29,6 +31,16 @@ public class GuiFactory {
                             .registerSubtype(DynamicNetworkTextureBinder.class, TextureBinderType.DYNAMIC_NETWORK.name())
                             .registerSubtype(LocalTextureBinder.class, TextureBinderType.LOCAL.name())
                             .registerSubtype(WebTextureBinder.class, TextureBinderType.WEB.name())
+
+            )
+            .registerTypeAdapterFactory(
+                    RuntimeTypeAdapter.of(ISerializable.class, "type")
+                            .registerSubtype(ContainerCloseModel.class, GuiEvents.CLOSE_CONTAINER.name())
+                            .registerSubtype(ContainerOpenModel.class, GuiEvents.OPEN_CONTAINER.name())
+                            .registerSubtype(KeyboardInputModel.class, GuiEvents.KEYBOARD_EVENT.name())
+                            .registerSubtype(MouseInputModel.class, GuiEvents.MOUSE_EVENT.name())
+                            .registerSubtype(CloseScreenModel.class, GuiEvents.CLOSE_SCREEN.name())
+                            .registerSubtype(OpenScreenModel.class, GuiEvents.OPEN_SCREEN.name())
 
             )
             .create();

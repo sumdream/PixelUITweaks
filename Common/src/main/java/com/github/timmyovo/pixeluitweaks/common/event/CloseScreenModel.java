@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContainerCloseModel implements ISerializable {
-    @SerializedName("closedContainer")
-    private List<ComponentContainer> closedContainer;
+public class CloseScreenModel implements ISerializable {
+    @SerializedName(value = "screenContainers")
+    private List<ComponentContainer> screenContainers;
 }

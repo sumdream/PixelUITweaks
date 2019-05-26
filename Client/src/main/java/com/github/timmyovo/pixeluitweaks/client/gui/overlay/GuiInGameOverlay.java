@@ -13,6 +13,7 @@ public class GuiInGameOverlay extends Gui {
     private int height;
 
     public void onResolutionChanged(ScaledResolution scaledResolution) {
+        System.out.println(111);
         this.width = scaledResolution.getScaledWidth();
         this.height = scaledResolution.getScaledHeight();
         SidebarManager.updateClientModels();
@@ -29,9 +30,9 @@ public class GuiInGameOverlay extends Gui {
         if (width != resolution.getScaledWidth() || height != resolution.getScaledHeight()) {
             onResolutionChanged(resolution);
         }
-        for (SidebarManager.ClientSidebar sidebar : SidebarManager.sidebarList) {
+        for (SidebarManager.ClientSidebar sidebar : SidebarManager.clientSidebarList) {
 
-            int i1 = SidebarManager.sidebarList.size() * fontRenderer.FONT_HEIGHT;
+            int i1 = SidebarManager.clientSidebarList.size() * fontRenderer.FONT_HEIGHT;
             int j1 = resolution.getScaledHeight() / 2 + i1 / 3;
 
             int j = 0;

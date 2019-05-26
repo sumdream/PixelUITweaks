@@ -12,7 +12,6 @@ public class PacketInOpenScreen implements IPacketIn {
     @Override
     public void readPacket(PacketBuffer packetBuffer) {
         Minecraft.getMinecraft().addScheduledTask(() -> {
-            System.out.println(Thread.currentThread().getName());
             String containerString = packetBuffer.readString(Short.MAX_VALUE);
             ComponentContainer componentContainer = GuiFactory.fromString(containerString, ComponentContainer.class);
             Minecraft minecraft = Minecraft.getMinecraft();

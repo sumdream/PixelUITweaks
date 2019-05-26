@@ -13,40 +13,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SidebarManager {
-    public static List<ClientSidebar> sidebarList = new ArrayList<>();
-    private static List<Sidebar> sidebarModels = new ArrayList<>();
+    public static List<ClientSidebar> clientSidebarList = new ArrayList<>();
+    private static List<Sidebar> serverSidebarModelList = new ArrayList<>();
 
     static {
 
     }
 
     public static void clear() {
-        sidebarModels.clear();
-        sidebarList.clear();
+        serverSidebarModelList.clear();
+        clientSidebarList.clear();
     }
 
     public static void updateClientModels() {
-        sidebarModels.clear();
-        sidebarModels.forEach(SidebarManager::addSidebar);
+        clientSidebarList.clear();
+        for (Sidebar sidebar : serverSidebarModelList) {
+            clientSidebarList.add(ClientSidebar.from(sidebar));
+        }
     }
 
     public static boolean addSidebar(Sidebar sidebar) {
         if (hasSidebar(sidebar)) {
             removeSidebar(sidebar);
         }
-        boolean add = sidebarList.add(ClientSidebar.from(sidebar));
+        boolean add = serverSidebarModelList.add(sidebar);
         updateClientModels();
         return add;
     }
 
     public static boolean removeSidebar(Sidebar sidebar) {
-        boolean b = sidebarList.removeIf(clientSidebar -> clientSidebar.getName().equalsIgnoreCase(sidebar.getName()));
+        boolean b = serverSidebarModelList.removeIf(clientSidebar -> clientSidebar.getName().equalsIgnoreCase(sidebar.getName()));
         updateClientModels();
         return b;
     }
 
     public static boolean hasSidebar(Sidebar sidebar) {
-        return sidebarList.stream().anyMatch(sidebar1 -> sidebar1.getName().equalsIgnoreCase(sidebar.getName()));
+        return serverSidebarModelList.stream().anyMatch(sidebar1 -> sidebar1.getName().equalsIgnoreCase(sidebar.getName()));
     }
 
     @Data

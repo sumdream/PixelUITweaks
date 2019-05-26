@@ -20,7 +20,7 @@ public class CommonContainer extends Container {
     public CommonContainer(List<ComponentSlot> componentSlots, EntityPlayer entityPlayer) {
         this.componentSlots = componentSlots;
         this.entityPlayer = entityPlayer;
-        this.container = new CommonInventory("", false, componentSlots.size());
+        this.container = new CommonInventory("", false, 36 + componentSlots.size());
         bindPlayerInventory(entityPlayer.inventory);
         componentSlots.stream()
                 .map(this::toMinecraftSlot)
@@ -42,12 +42,14 @@ public class CommonContainer extends Container {
     }
 
     protected void bindPlayerInventory(IInventory playerInventory) {
+        //player inventory
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.a(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                int index = j + i * 9 + 9;
+                this.a(new Slot(playerInventory, index, 8 + j * 18, 84 + i * 18));
             }
         }
-
+        //hotbar
         for (int k = 0; k < 9; ++k) {
             this.a(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
@@ -162,5 +164,11 @@ public class CommonContainer extends Container {
             }
         }
         return flag;
+    }
+
+    @Override
+    public ItemStack a(int i, int j, InventoryClickType inventoryclicktype, EntityHuman entityhuman) {
+        ItemStack a = super.a(i, j, inventoryclicktype, entityhuman);
+        return a;
     }
 }

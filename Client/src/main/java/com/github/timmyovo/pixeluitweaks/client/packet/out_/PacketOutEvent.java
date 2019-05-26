@@ -14,6 +14,11 @@ public class PacketOutEvent implements IPacketOut {
         this.eventModel = eventModel;
     }
 
+    public static void notifyEvent(GuiEvents guiEvents, ISerializable iSerializable) {
+        PacketOutEvent packetOutEvent = new PacketOutEvent(guiEvents, iSerializable);
+        packetOutEvent.sendPacket();
+    }
+
     @Override
     public void writePacket(PacketBuffer packetBuffer) {
         packetBuffer.writeString(guiEvents.name());

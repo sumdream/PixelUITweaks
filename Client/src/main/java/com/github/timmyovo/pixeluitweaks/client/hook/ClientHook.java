@@ -34,7 +34,6 @@ public class ClientHook implements IComp<ClientHook> {
             CPacketCustomPayload cPacketCustomPayload = (CPacketCustomPayload) fmlProxyPacket.toC17Packet();
             PacketBuffer bufferData = cPacketCustomPayload.getBufferData();
             String name = bufferData.readString(32);
-            System.out.println(name);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bufferData.readByteArray());
             BufferedImage bufferedImage = null;
             try {
@@ -60,8 +59,6 @@ public class ClientHook implements IComp<ClientHook> {
         int windowId = cPacketCustomPayload.getBufferData().readInt();
         String readUTF8String = ByteBufUtils.readUTF8String(cPacketCustomPayload.getBufferData());
         EntityPlayer playerSP = FMLClientHandler.instance().getClient().player;
-        System.out.println(windowId);
-        System.out.println(readUTF8String);
         playerSP.openGui("pixeluiutility", 0, null, 0, 0, 0);
         playerSP.openContainer.windowId = (int) windowId;
     }

@@ -16,7 +16,6 @@ public class PacketInRecvTexture implements IPacketIn {
     public void readPacket(PacketBuffer packetBuffer) {
         Minecraft.getMinecraft().addScheduledTask(() -> {
             String name = packetBuffer.readString(32);
-            System.out.println(name);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(packetBuffer.readByteArray());
             BufferedImage bufferedImage = null;
             try {

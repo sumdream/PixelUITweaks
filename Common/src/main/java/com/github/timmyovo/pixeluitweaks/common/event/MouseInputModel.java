@@ -3,14 +3,20 @@ package com.github.timmyovo.pixeluitweaks.common.event;
 import com.github.timmyovo.pixeluitweaks.common.api.ISerializable;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MouseInputModel implements ISerializable {
     @SerializedName("componentContainer")
-    private ComponentContainer componentContainer;
+    private List<ComponentContainer> componentContainer;
     @SerializedName("mouseX")
     private int mouseX;
     @SerializedName("mouseY")

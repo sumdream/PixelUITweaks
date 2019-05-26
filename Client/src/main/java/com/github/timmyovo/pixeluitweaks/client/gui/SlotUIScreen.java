@@ -2,7 +2,9 @@ package com.github.timmyovo.pixeluitweaks.client.gui;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.component.*;
 import com.github.timmyovo.pixeluitweaks.client.gui.container.CommonContainer;
+import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
 import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
+import com.github.timmyovo.pixeluitweaks.common.event.*;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.*;
@@ -24,12 +26,14 @@ import java.util.stream.Collectors;
 
 public class SlotUIScreen extends GuiContainer {
     private EntityPlayer owner;
+    private List<ComponentContainer> componentContainerList;
     private List<ClientComponentContainer> containers;
     private List<ClientComponent> clientComponents;
 
     public SlotUIScreen(EntityPlayer entityPlayer, ComponentContainer... guiContainers) {
         super(null);
         this.owner = entityPlayer;
+        this.componentContainerList = Arrays.stream(guiContainers).collect(Collectors.toList());
         this.containers = Arrays.stream(guiContainers)
                 .map(ClientComponentContainer::from)
                 .collect(Collectors.toList());
@@ -47,6 +51,13 @@ public class SlotUIScreen extends GuiContainer {
             addContainer(guiContainer);
         }
     }
+
+    @Override
+    public void initGui() {
+        PacketOutEvent.notifyEvent(GuiEvents.OPEN_CONTAINER, ContainerOpenModel.builder().openedContainer(componentContainerList).build());
+        super.initGui();
+    }
+
 
     @Override
     public void setWorldAndResolution(Minecraft mc, int width, int height) {
@@ -132,6 +143,11 @@ public class SlotUIScreen extends GuiContainer {
                 .filter(iServerGuiBase -> iServerGuiBase instanceof GuiListContentImpl)
                 .map(iServerGuiBase -> ((GuiListContentImpl) iServerGuiBase))
                 .forEach(guiListContent -> guiListContent.keyTyped(typedChar, keyCode));
+        PacketOutEvent.notifyEvent(GuiEvents.KEYBOARD_EVENT, KeyboardInputModel.builder()
+                .componentContainer(componentContainerList)
+                .keycode(keyCode)
+                .typedChar(typedChar)
+                .build());
         super.keyTyped(typedChar, keyCode);
     }
 
@@ -140,6 +156,12 @@ public class SlotUIScreen extends GuiContainer {
         clientComponents.stream()
                 .filter(clientComponent -> clientComponent.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
                 .forEach(clientComponent -> clientComponent.mouseReleased(mouseX, mouseY));
+        PacketOutEvent.notifyEvent(GuiEvents.MOUSE_EVENT, MouseInputModel.builder()
+                .componentContainer(componentContainerList)
+                .mouseButton(mouseButton)
+                .mouseX(mouseX)
+                .mouseY(mouseY)
+                .build());
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
@@ -147,6 +169,7 @@ public class SlotUIScreen extends GuiContainer {
     @Override
     public void onGuiClosed() {
         Keyboard.enableRepeatEvents(false);
+        PacketOutEvent.notifyEvent(GuiEvents.CLOSE_CONTAINER, ContainerCloseModel.builder().closedContainer(componentContainerList).build());
         super.onGuiClosed();
     }
 
