@@ -1,9 +1,12 @@
 buildscript {
     repositories {
-        jcenter()
+        maven {
+            name = "jcenter"
+            url = "https://work.ymmclt.com/nexus/repository/jcenter/"
+        }
         maven {
             name = "forge"
-            url = "https://files.minecraftforge.net/maven"
+            url = "https://work.ymmclt.com/nexus/repository/forge/"
         }
     }
     dependencies {
