@@ -102,7 +102,7 @@ artifacts {
 build {
     doLast {
         exec {
-            def obf_jar = "$projectDir\\obf\\obf.jar"
+            def obf_jar = "$projectDir/obf/obf.jar"
             def input_jar = jar.archivePath
             workingDir './'
             commandLine 'java',"-jar","${obf_jar}","--config","./obf/obf.jocfg","--jarIn","${input_jar}","--jarOut","./build/libs//${jar.archiveName}_OBF.jar"
