@@ -1,0 +1,14 @@
+pipeline:
+  build:
+    image: frekele/gradle:4.8-jdk8
+    commands:
+      - sh gradlew build --stacktrace --no-daemon
+  release:
+    image: plugins/gitea-release
+    api_key:
+      from_secret: "KEY"
+    base_url: https://work.ymmclt.com/git/
+    files:
+      - build/libs/*.jar
+    when:
+      event: tag

@@ -1,7 +1,29 @@
 apply plugin: 'java'
 
+def getCheckedOutGitCommitHash() {
+    def gitFolder = "$rootDir/.git/"
+    def takeFromHash = 12
+    /*
+     * '.git/HEAD' contains either
+     *      in case of detached head: the currently checked out commit hash
+     *      otherwise: a reference to a file containing the current commit hash
+     */
+    def head = new File(gitFolder + "HEAD").text.split(":") // .git/HEAD
+    def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
+    // def isRef = head.length > 1     // ref: refs/heads/master
+
+    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+
+    def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
+    refHead.text.trim().take takeFromHash
+}
+
+def commit_id = getCheckedOutGitCommitHash()
+
+
 group = pluginGroup
-version = pluginVersion
+version = pluginVersion+"#${commit_id}"
+archivesBaseName = pluginBuildName
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -37,8 +59,6 @@ configurations.all {
     transitive = false
 }
 
-
-
 dependencies {
     shade project(path: ':Common', configuration: 'default')
     implementation group: 'com.github.skystardust', name: 'UltraCore-Bukkit', version: '4.4-SNAPSHOT'
@@ -52,6 +72,15 @@ jar {
         from(project.zipTree(dep)){
             exclude 'META-INF', 'META-INF/**'
             exclude 'dummyThing'
+        }
+    }
+}
+
+build {
+    doLast {
+        copy {
+            from jar.archivePath
+            into new File(rootProject.buildDir,"libs")
         }
     }
 }

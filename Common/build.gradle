@@ -2,14 +2,44 @@ plugins {
     id 'java'
 }
 
+def getCheckedOutGitCommitHash() {
+    def gitFolder = "$rootDir/.git/"
+    def takeFromHash = 12
+    /*
+     * '.git/HEAD' contains either
+     *      in case of detached head: the currently checked out commit hash
+     *      otherwise: a reference to a file containing the current commit hash
+     */
+    def head = new File(gitFolder + "HEAD").text.split(":") // .git/HEAD
+    def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
+    // def isRef = head.length > 1     // ref: refs/heads/master
+
+    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+
+    def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
+    refHead.text.trim().take takeFromHash
+}
+
+def commit_id = getCheckedOutGitCommitHash()
+
 group 'com.github.timmyovo'
-version '1.0-SNAPSHOT'
+version '1.0-SNAPSHOT'+"#"+commit_id
+archivesBaseName = "PixelUITweaks-Common"
 
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
+}
+
+build {
+    doLast {
+        copy {
+            from jar.archivePath
+            into new File(rootProject.buildDir,"libs")
+        }
+    }
 }
 
 dependencies {

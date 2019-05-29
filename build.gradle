@@ -12,5 +12,11 @@ repositories {
     mavenCentral()
 }
 
+build {
+    doLast {
+        jar.archivePath.delete()
+    }
+}
+
 dependencies {
 }
