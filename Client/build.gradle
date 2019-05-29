@@ -102,10 +102,9 @@ artifacts {
 build {
     doLast {
         exec {
-            def obf_jar = "$projectDir/obf/obf.jar"
             def input_jar = jar.archivePath
             workingDir './'
-            commandLine 'java',"-jar","${obf_jar}","--config","./obf/obf.jocfg","--jarIn","${input_jar}","--jarOut","./build/libs//${jar.archiveName}_OBF.jar"
+            commandLine 'java',"-jar","./obf/obf.jar","--config","./obf/obf.jocfg","--jarIn","${input_jar}","--jarOut","./build/libs//${jar.archiveName}_OBF.jar"
 
             //store the output instead of printing to the console:
             standardOutput = new ByteArrayOutputStream()
