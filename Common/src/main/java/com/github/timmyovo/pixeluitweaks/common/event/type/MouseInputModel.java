@@ -1,4 +1,4 @@
-package com.github.timmyovo.pixeluitweaks.common.event;
+package com.github.timmyovo.pixeluitweaks.common.event.type;
 
 import com.github.timmyovo.pixeluitweaks.common.api.ISerializable;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;

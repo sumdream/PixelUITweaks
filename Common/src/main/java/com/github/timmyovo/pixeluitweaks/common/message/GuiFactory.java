@@ -1,7 +1,8 @@
 package com.github.timmyovo.pixeluitweaks.common.message;
 
 import com.github.timmyovo.pixeluitweaks.common.api.ISerializable;
-import com.github.timmyovo.pixeluitweaks.common.event.*;
+import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
+import com.github.timmyovo.pixeluitweaks.common.event.type.*;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.GuiComponents;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.*;
@@ -35,12 +36,12 @@ public class GuiFactory {
             )
             .registerTypeAdapterFactory(
                     RuntimeTypeAdapter.of(ISerializable.class, "type")
-                            .registerSubtype(ContainerCloseModel.class, GuiEvents.CLOSE_CONTAINER.name())
-                            .registerSubtype(ContainerOpenModel.class, GuiEvents.OPEN_CONTAINER.name())
-                            .registerSubtype(KeyboardInputModel.class, GuiEvents.KEYBOARD_EVENT.name())
-                            .registerSubtype(MouseInputModel.class, GuiEvents.MOUSE_EVENT.name())
-                            .registerSubtype(CloseScreenModel.class, GuiEvents.CLOSE_SCREEN.name())
-                            .registerSubtype(OpenScreenModel.class, GuiEvents.OPEN_SCREEN.name())
+                            .registerSubtype(ContainerCloseModel.class, GuiEventType.CLOSE_CONTAINER.name())
+                            .registerSubtype(ContainerOpenModel.class, GuiEventType.OPEN_CONTAINER.name())
+                            .registerSubtype(KeyboardInputModel.class, GuiEventType.KEYBOARD_EVENT.name())
+                            .registerSubtype(MouseInputModel.class, GuiEventType.MOUSE_EVENT.name())
+                            .registerSubtype(CloseScreenModel.class, GuiEventType.CLOSE_SCREEN.name())
+                            .registerSubtype(OpenScreenModel.class, GuiEventType.OPEN_SCREEN.name())
 
             )
             .create();

@@ -3,7 +3,11 @@ package com.github.timmyovo.pixeluitweaks.client.gui;
 import com.github.timmyovo.pixeluitweaks.client.gui.component.*;
 import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
 import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
-import com.github.timmyovo.pixeluitweaks.common.event.*;
+import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
+import com.github.timmyovo.pixeluitweaks.common.event.type.CloseScreenModel;
+import com.github.timmyovo.pixeluitweaks.common.event.type.KeyboardInputModel;
+import com.github.timmyovo.pixeluitweaks.common.event.type.MouseInputModel;
+import com.github.timmyovo.pixeluitweaks.common.event.type.OpenScreenModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.*;
@@ -42,7 +46,7 @@ public class CommonUIScreen extends GuiScreen {
     @Override
     public void initGui() {
         super.initGui();
-        PacketOutEvent.notifyEvent(GuiEvents.OPEN_SCREEN, OpenScreenModel.builder().screenContainers(componentContainerList).build());
+        PacketOutEvent.notifyEvent(GuiEventType.OPEN_SCREEN, OpenScreenModel.builder().screenContainers(componentContainerList).build());
     }
 
     public void addContainer(ComponentContainer componentContainer) {
@@ -127,7 +131,7 @@ public class CommonUIScreen extends GuiScreen {
                 .filter(iServerGuiBase -> iServerGuiBase instanceof GuiListContentImpl)
                 .map(iServerGuiBase -> ((GuiListContentImpl) iServerGuiBase))
                 .forEach(guiListContent -> guiListContent.keyTyped(typedChar, keyCode));
-        PacketOutEvent.notifyEvent(GuiEvents.KEYBOARD_EVENT, KeyboardInputModel.builder()
+        PacketOutEvent.notifyEvent(GuiEventType.KEYBOARD_EVENT, KeyboardInputModel.builder()
                 .componentContainer(componentContainerList)
                 .keycode(keyCode)
                 .typedChar(typedChar)
@@ -140,7 +144,7 @@ public class CommonUIScreen extends GuiScreen {
         clientComponents.stream()
                 .filter(clientComponent -> clientComponent.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
                 .forEach(clientComponent -> clientComponent.mouseReleased(mouseX, mouseY));
-        PacketOutEvent.notifyEvent(GuiEvents.MOUSE_EVENT, MouseInputModel.builder()
+        PacketOutEvent.notifyEvent(GuiEventType.MOUSE_EVENT, MouseInputModel.builder()
                 .componentContainer(componentContainerList)
                 .mouseButton(mouseButton)
                 .mouseX(mouseX)
@@ -153,7 +157,7 @@ public class CommonUIScreen extends GuiScreen {
     @Override
     public void onGuiClosed() {
         Keyboard.enableRepeatEvents(false);
-        PacketOutEvent.notifyEvent(GuiEvents.CLOSE_SCREEN, CloseScreenModel.builder().screenContainers(componentContainerList).build());
+        PacketOutEvent.notifyEvent(GuiEventType.CLOSE_SCREEN, CloseScreenModel.builder().screenContainers(componentContainerList).build());
         super.onGuiClosed();
     }
 

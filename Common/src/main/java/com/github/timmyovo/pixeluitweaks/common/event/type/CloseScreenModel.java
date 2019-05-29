@@ -1,4 +1,4 @@
-package com.github.timmyovo.pixeluitweaks.common.event;
+package com.github.timmyovo.pixeluitweaks.common.event.type;
 
 import com.github.timmyovo.pixeluitweaks.common.api.ISerializable;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
@@ -14,11 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class KeyboardInputModel implements ISerializable {
-    @SerializedName("componentContainer")
-    private List<ComponentContainer> componentContainer;
-    @SerializedName("keycode")
-    private int keycode;
-    @SerializedName("typedChar")
-    private char typedChar;
+public class CloseScreenModel implements ISerializable {
+    @SerializedName(value = "screenContainers")
+    private List<ComponentContainer> screenContainers;
 }

@@ -1,4 +1,4 @@
-package com.github.timmyovo.pixeluitweaks.common.event;
+package com.github.timmyovo.pixeluitweaks.common.event.type;
 
 import com.github.timmyovo.pixeluitweaks.common.api.ISerializable;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OpenScreenModel implements ISerializable {
-    @SerializedName(value = "screenContainers")
-    private List<ComponentContainer> screenContainers;
+public class ContainerCloseModel implements ISerializable {
+    @SerializedName("closedContainer")
+    private List<ComponentContainer> closedContainer;
 }

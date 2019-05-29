@@ -12,8 +12,10 @@ import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.SidebarType;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetworkTextureBinder;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
+import com.github.timmyovo.pixeluitweaks.server.listener.EventListener;
 import com.github.timmyovo.pixeluitweaks.server.packet.PacketManager;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,6 +31,7 @@ import java.util.List;
 public final class PixelUITweaksServer extends JavaPlugin {
     private static PixelUITweaksServer PIXEL_UI_TWEAKS_SERVER;
     private List<IComp> modules = new ArrayList<>();
+    public static final String CHANNEL = "UT|EVENT";
 
     public static PixelUITweaksServer getPixelUiTweaksServer() {
         return PIXEL_UI_TWEAKS_SERVER;
@@ -44,6 +47,7 @@ public final class PixelUITweaksServer extends JavaPlugin {
     public void onEnable() {
         PIXEL_UI_TWEAKS_SERVER = this;
         this.modules.add(new PacketManager().init());
+        Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL, new EventListener());
         MainCommandSpec.newBuilder()
                 .addAlias("ui")
                 .withCommandSpecExecutor((commandSender, strings) -> {
@@ -56,7 +60,7 @@ public final class PixelUITweaksServer extends JavaPlugin {
                     module.sendListContent(((Player) commandSender), Sidebar.builder()
                             .sidebarType(SidebarType.ADD)
                             .name("sss")
-                            .strings(Arrays.asList("str1", "str2", "欧舒丹的那就开始的v白色的接口v八十端口v"))
+                            .strings(Arrays.asList("str1", "str2", "adsaasdjsabjdhsf"))
                             .xOffset("-(w /2)")
                             .yOffset("- (h / 8)")
                             .build());

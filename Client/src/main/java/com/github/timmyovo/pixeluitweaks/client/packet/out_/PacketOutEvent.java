@@ -2,26 +2,26 @@ package com.github.timmyovo.pixeluitweaks.client.packet.out_;
 
 import com.github.timmyovo.pixeluitweaks.client.packet.IPacketOut;
 import com.github.timmyovo.pixeluitweaks.common.api.ISerializable;
-import com.github.timmyovo.pixeluitweaks.common.event.GuiEvents;
+import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import net.minecraft.network.PacketBuffer;
 
 public class PacketOutEvent implements IPacketOut {
-    private GuiEvents guiEvents;
+    private GuiEventType guiEventType;
     private ISerializable eventModel;
 
-    public PacketOutEvent(GuiEvents guiEvents, ISerializable eventModel) {
-        this.guiEvents = guiEvents;
+    public PacketOutEvent(GuiEventType guiEventType, ISerializable eventModel) {
+        this.guiEventType = guiEventType;
         this.eventModel = eventModel;
     }
 
-    public static void notifyEvent(GuiEvents guiEvents, ISerializable iSerializable) {
-        PacketOutEvent packetOutEvent = new PacketOutEvent(guiEvents, iSerializable);
+    public static void notifyEvent(GuiEventType guiEventType, ISerializable iSerializable) {
+        PacketOutEvent packetOutEvent = new PacketOutEvent(guiEventType, iSerializable);
         packetOutEvent.sendPacket();
     }
 
     @Override
     public void writePacket(PacketBuffer packetBuffer) {
-        packetBuffer.writeString(guiEvents.name());
+        packetBuffer.writeString(guiEventType.name());
         packetBuffer.writeString(eventModel.asString());
     }
 }
