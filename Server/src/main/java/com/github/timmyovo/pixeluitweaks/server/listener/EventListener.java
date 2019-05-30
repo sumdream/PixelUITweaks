@@ -13,6 +13,26 @@ public class EventListener implements PluginMessageListener {
         String eventTypeString = packetDataSerializer.e(32);
         try {
             GuiEventType eventType = GuiEventType.valueOf(eventTypeString);
+            switch (eventType) {
+                case MOUSE_EVENT:
+                    break;
+                case KEYBOARD_EVENT:
+                    break;
+                case OPEN_SCREEN:
+                    break;
+                case CHECKBOX_CLICK:
+                    break;
+                case BUTTON_CLICK:
+                    break;
+                case CLOSE_SCREEN:
+                    break;
+                case OPEN_CONTAINER:
+                    break;
+                case CLOSE_CONTAINER:
+                    break;
+                case TEXTFIELD_INPUT:
+                    break;
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("无法辨别事件类型...");
         }
