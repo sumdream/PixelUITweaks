@@ -1,6 +1,9 @@
 package com.github.timmyovo.pixeluitweaks.client.gui.component;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
+import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
+import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
+import com.github.timmyovo.pixeluitweaks.common.event.type.CheckBoxClickModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentCheckBox;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,6 +80,10 @@ public class GuiCheckBoxImpl extends Gui implements ClientComponent<ComponentChe
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
         this.isChecked = !isChecked;
+        PacketOutEvent.notifyEvent(GuiEventType.CHECKBOX_CLICK, CheckBoxClickModel.builder()
+                .isChecked(isChecked)
+                .componentCheckBox(componentCheckBox)
+                .build());
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.github.timmyovo.pixeluitweaks.client.gui.component;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
+import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
+import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
+import com.github.timmyovo.pixeluitweaks.common.event.type.TextfieldInputModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentTextField;
 import com.google.common.base.Predicate;
 import lombok.Getter;
@@ -183,6 +186,10 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
         if (this.validator.test(s)) {
             this.text = s;
             this.moveCursorBy(i - this.selectionEnd + l);
+            PacketOutEvent.notifyEvent(GuiEventType.TEXTFIELD_INPUT, TextfieldInputModel.builder()
+                    .inputText(text)
+                    .componentTextField(componentTextField)
+                    .build());
         }
     }
 

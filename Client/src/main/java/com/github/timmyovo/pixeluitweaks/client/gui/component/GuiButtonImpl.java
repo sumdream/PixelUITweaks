@@ -2,7 +2,10 @@ package com.github.timmyovo.pixeluitweaks.client.gui.component;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientRenderMethod;
+import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
 import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
+import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
+import com.github.timmyovo.pixeluitweaks.common.event.type.ButtonClickModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButton;
 import lombok.Getter;
 import lombok.Setter;
@@ -104,6 +107,18 @@ public class GuiButtonImpl extends Gui implements ClientComponent<ComponentButto
 
             this.drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
         }
+    }
+
+    @Override
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+        return this.visible && mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+    }
+
+    @Override
+    public void mouseReleased(int mouseX, int mouseY) {
+        PacketOutEvent.notifyEvent(GuiEventType.BUTTON_CLICK, ButtonClickModel.builder()
+                .componentButton(componentButton)
+                .build());
     }
 
     @Override
