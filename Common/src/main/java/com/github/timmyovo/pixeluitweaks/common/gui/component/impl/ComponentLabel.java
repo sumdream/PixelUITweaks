@@ -37,7 +37,9 @@ public class ComponentLabel extends AbstractComponent {
         setTextColor(builder.textColor);
         setBorder(builder.border);
         setLabels(builder.labels);
-        setComponentId(UUID.randomUUID());
+        if (getComponentId() == null) {
+            setComponentId(UUID.randomUUID());
+        }
     }
 
     public static Builder newBuilder() {

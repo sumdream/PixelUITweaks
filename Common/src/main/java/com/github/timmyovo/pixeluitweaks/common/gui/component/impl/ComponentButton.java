@@ -27,7 +27,9 @@ public class ComponentButton extends AbstractComponent {
         setTextureBinder(builder.textureBinder);
         setContentHover(builder.contentHover);
         setDisplayString(builder.displayString);
-        setComponentId(UUID.randomUUID());
+        if (getComponentId() == null) {
+            setComponentId(UUID.randomUUID());
+        }
     }
 
     public static Builder newBuilder() {

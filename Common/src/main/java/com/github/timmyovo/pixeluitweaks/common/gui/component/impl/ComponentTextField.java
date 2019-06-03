@@ -36,7 +36,9 @@ public class ComponentTextField extends AbstractComponent {
         setMaxStringLength(builder.maxStringLength);
         setEnableBackgroundDrawing(builder.enableBackgroundDrawing);
         setCanLoseFocus(builder.canLoseFocus);
-        setComponentId(UUID.randomUUID());
+        if (getComponentId() == null) {
+            setComponentId(UUID.randomUUID());
+        }
     }
 
     public static Builder newBuilder() {

@@ -19,7 +19,9 @@ public class ComponentPicture extends AbstractComponent {
         setRenderMethod(builder.renderMethod);
         setTextureBinder(builder.textureBinder);
         setContentHover(builder.contentHover);
-        setComponentId(UUID.randomUUID());
+        if (getComponentId() == null) {
+            setComponentId(UUID.randomUUID());
+        }
     }
 
     public static Builder newBuilder() {

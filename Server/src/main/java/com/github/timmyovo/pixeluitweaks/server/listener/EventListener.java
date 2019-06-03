@@ -3,6 +3,9 @@ package com.github.timmyovo.pixeluitweaks.server.listener;
 import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import com.github.timmyovo.pixeluitweaks.common.event.type.*;
 import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
+import com.github.timmyovo.pixeluitweaks.server.PixelUITweaksServer;
+import com.github.timmyovo.pixeluitweaks.server.config.CallbackConfiguration;
+import com.github.timmyovo.pixeluitweaks.server.config.CommandEntry;
 import com.github.timmyovo.pixeluitweaks.server.events.*;
 import io.netty.buffer.Unpooled;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
@@ -10,12 +13,26 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 public class EventListener implements PluginMessageListener {
+    public static <T> void testFor(Supplier<T> booleanSupplier, Consumer<T> tConsumer) {
+        T t = booleanSupplier.get();
+        if (t != null) {
+            tConsumer.accept(t);
+        }
+    }
+
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         PacketDataSerializer packetDataSerializer = new PacketDataSerializer(Unpooled.wrappedBuffer(message));
         String eventTypeString = packetDataSerializer.e(32);
         String jsonString = packetDataSerializer.e(Short.MAX_VALUE);
+        CallbackConfiguration callbackConfiguration = PixelUITweaksServer.getPixelUiTweaksServer().getCallbackConfiguration();
+        Map<UUID, CommandEntry> guiContextCallback = callbackConfiguration.getGuiContextCallback();
         try {
             GuiEventType eventType = GuiEventType.valueOf(eventTypeString);
             switch (eventType) {
@@ -34,10 +51,16 @@ public class EventListener implements PluginMessageListener {
                 case CHECKBOX_CLICK:
                     CheckBoxClickModel checkBoxClickModel = GuiFactory.fromString(jsonString, CheckBoxClickModel.class);
                     Bukkit.getPluginManager().callEvent(new GuiCheckboxClickEvent(player, checkBoxClickModel));
+                    testFor(() -> guiContextCallback.get(checkBoxClickModel.getComponentCheckBox().getComponentId()), commandEntry -> {
+                        commandEntry.execute(player);
+                    });
                     break;
                 case BUTTON_CLICK:
                     ButtonClickModel buttonClickModel = GuiFactory.fromString(jsonString, ButtonClickModel.class);
                     Bukkit.getPluginManager().callEvent(new GuiButtonClickEvent(player, buttonClickModel));
+                    testFor(() -> guiContextCallback.get(buttonClickModel.getComponentButton().getComponentId()), commandEntry -> {
+                        commandEntry.execute(player);
+                    });
                     break;
                 case CLOSE_SCREEN:
                     CloseScreenModel closeScreenModel = GuiFactory.fromString(jsonString, CloseScreenModel.class);

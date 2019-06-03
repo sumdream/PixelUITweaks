@@ -52,7 +52,9 @@ public class ComponentListContent extends AbstractComponent {
         setScrollbarX(builder.scrollbarX);
         setOverlayY(builder.overlayY);
         setContents(builder.contents);
-        setComponentId(UUID.randomUUID());
+        if (getComponentId() == null) {
+            setComponentId(UUID.randomUUID());
+        }
     }
 
     public static Builder newBuilder() {

@@ -32,7 +32,9 @@ public class ComponentSlot extends AbstractComponent {
         setSlotIndex(builder.slotIndex);
         setSlotX(builder.slotX);
         setSlotY(builder.slotY);
-        setComponentId(UUID.randomUUID());
+        if (getComponentId() == null) {
+            setComponentId(UUID.randomUUID());
+        }
     }
 
     public static Builder newBuilder() {

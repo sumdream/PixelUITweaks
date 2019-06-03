@@ -30,7 +30,9 @@ public class ComponentCheckBox extends AbstractComponent {
         setContentHover(builder.contentHover);
         setBoxWidth(builder.boxWidth);
         setDisplayString(builder.displayString);
-        setComponentId(UUID.randomUUID());
+        if (getComponentId() == null) {
+            setComponentId(UUID.randomUUID());
+        }
     }
 
     public static Builder newBuilder() {
