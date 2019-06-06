@@ -50,4 +50,8 @@ public class GuiFactory {
         return GSON.fromJson(string, clazz);
     }
 
+
+    public static String toJson(Object object) {
+        return GSON.toJson(object);
+    }
 }

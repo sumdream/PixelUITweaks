@@ -1,9 +1,9 @@
 package com.github.timmyovo.pixeluitweaks.common.api;
 
-import com.google.gson.Gson;
+import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
 
 public interface ISerializable {
     default String asString() {
-        return new Gson().toJson(this);
+        return GuiFactory.GSON.toJson(this);
     }
 }

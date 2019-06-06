@@ -3,6 +3,7 @@ package com.github.timmyovo.pixeluitweaks.server;
 import com.github.skystardust.ultracore.bukkit.commands.MainCommandSpec;
 import com.github.skystardust.ultracore.core.PluginInstance;
 import com.github.skystardust.ultracore.core.configuration.ConfigurationManager;
+import com.github.skystardust.ultracore.core.utils.FileUtils;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButton;
@@ -11,6 +12,7 @@ import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.Sidebar;
 import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.SidebarType;
+import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetworkTextureBinder;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
@@ -30,6 +32,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -55,13 +59,8 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                 .findAny().orElse(null));
     }
 
-    @Override
-    public void onEnable() {
-        PIXEL_UI_TWEAKS_SERVER = this;
-        this.modules.add(new PacketManager().init());
-        readTexture();
-        uiCommandInit();
-        ComponentContainer componentContainer = ComponentContainer.builder()
+    private ComponentContainer exampleContainer() {
+        return ComponentContainer.builder()
                 .width(256)
                 .height(256)
                 .componentList(Arrays.asList(ComponentButton.newBuilder()
@@ -110,23 +109,41 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                                 .build()))
                         .build())
                 .build();
-        Sidebar sidebar = Sidebar.builder()
+    }
+
+    private Sidebar exampleSidebar() {
+        return Sidebar.builder()
                 .sidebarType(SidebarType.ADD)
                 .name("sss")
                 .strings(Arrays.asList("str1", "str2", "adsaasdjsabjdhsf"))
                 .xOffset("-(w /2)")
                 .yOffset("- (h / 8)")
                 .build();
-        this.configurationManager = new ConfigurationManager(this);
-        configurationManager.registerConfiguration("guiConfiguration", () -> new GuiConfiguration(Collections.singletonList(new GuiConfiguration.GuiEntry("example", true, componentContainer))));
-        configurationManager.registerConfiguration("callbackConfiguration", () -> new CallbackConfiguration(ImmutableMap.of(UUID.randomUUID(), new CommandEntry(Collections.singletonList(new CommandEntry.SingleCommandEntry("exampleCommand", true, true))))));
-        configurationManager.registerConfiguration("textureConfiguration", () -> new TextureConfiguration(Collections.singletonList("test.png")));
-        configurationManager.registerConfiguration("listContentConfiguration", () -> ListContentConfiguration.builder()
-                .sidebarList(Collections.singletonList(sidebar))
-                .build());
+    }
+
+    @Override
+    public void onEnable() {
+        PIXEL_UI_TWEAKS_SERVER = this;
+        this.modules.add(new PacketManager().init());
+        try {
+            Field field = FileUtils.class.getField("GSON");
+            field.setAccessible(true);
+            Field modifiers = Field.class.getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(null, GuiFactory.GSON);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        initConfigurations();
+        readTexture();
+        uiCommandInit();
         readSidebar();
-        configurationManager.init(getClass(), this).start();
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL, new EventListener());
+        openUICommand();
+    }
+
+    private void openUICommand() {
         MainCommandSpec.newBuilder()
                 .addAlias("ui")
                 .withCommandSpecExecutor((commandSender, strings) -> {
@@ -136,12 +153,25 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    module.sendListContent(((Player) commandSender), sidebar);
-                    module.openContainerScreen(((Player) commandSender), componentContainer);
+                    module.sendListContent(((Player) commandSender), exampleSidebar());
+                    module.openContainerScreen(((Player) commandSender), exampleContainer());
                     return true;
                 })
                 .build()
                 .register();
+
+    }
+
+    private void initConfigurations() {
+
+        this.configurationManager = new ConfigurationManager(this);
+        configurationManager.registerConfiguration("guiConfiguration", () -> new GuiConfiguration(Collections.singletonList(new GuiConfiguration.GuiEntry("example", true, exampleContainer()))));
+        configurationManager.registerConfiguration("callbackConfiguration", () -> new CallbackConfiguration(ImmutableMap.of(UUID.randomUUID(), new CommandEntry(Collections.singletonList(new CommandEntry.SingleCommandEntry("exampleCommand", true, true))))));
+        configurationManager.registerConfiguration("textureConfiguration", () -> new TextureConfiguration(Collections.singletonList("test.png")));
+        configurationManager.registerConfiguration("listContentConfiguration", () -> ListContentConfiguration.builder()
+                .sidebarList(Collections.singletonList(exampleSidebar()))
+                .build());
+        configurationManager.init(getClass(), this).start();
     }
 
     private void readSidebar() {
@@ -234,7 +264,7 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
             try {
                 BufferedImage read = ImageIO.read(input);
                 TextureConfiguration.texturesMap.put(texture, read);
-                getLogger().info("Load texture: " + texture + " success. Info: " + read.getWidth() + "*" + read.getHeight());
+                getLogger().info("Loaded texture: " + texture + ". Texture Size: " + read.getWidth() + "*" + read.getHeight());
             } catch (IOException e) {
                 getLogger().warning("Can not find image: " + input.toString());
                 getLogger().warning(e.getLocalizedMessage());

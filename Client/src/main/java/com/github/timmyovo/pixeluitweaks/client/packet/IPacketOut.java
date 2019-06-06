@@ -15,6 +15,9 @@ public interface IPacketOut {
         PacketBuffer packetBuffer = new PacketBuffer(Unpooled.buffer());
         writePacket(packetBuffer);
         EntityPlayerSP player = Minecraft.getMinecraft().player;
+        if (player == null) {
+            return;
+        }
         NetHandlerPlayClient connection = player.connection;
         if (connection == null) {
             return;
