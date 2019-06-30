@@ -79,6 +79,7 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
     @Override
     public void updateComponent(ComponentTextField componentModel) {
         Minecraft mc = Minecraft.getMinecraft();
+		this.fontRenderer = Minecraft.getMinecraft().fontRenderer;
         ScaledResolution scaledResolution = new ScaledResolution(mc);
         int scaledHeight = scaledResolution.getScaledHeight();
         int scaledWidth = scaledResolution.getScaledWidth();
