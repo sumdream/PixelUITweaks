@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.math.MathHelper;
 import net.objecthunter.exp4j.ExpressionBuilder;
+import org.lwjgl.input.Mouse;
 
 @Getter
 @Setter
@@ -192,6 +193,11 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
                     .componentTextField(componentTextField)
                     .build());
         }
+    }
+
+    @Override
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+        return mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height && isEnabled;
     }
 
     /**
@@ -422,6 +428,11 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
                     }
             }
         }
+    }
+
+    @Override
+    public void mouseReleased(int mouseX, int mouseY) {
+        mouseClicked(mouseX,mouseY, Mouse.getEventButton());
     }
 
     /**
