@@ -7,6 +7,7 @@
 *.ipr
 out
 gen
+build
 
 Client/run
 .gradle

@@ -4,13 +4,17 @@ import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.TextureBinder;
 import com.google.gson.annotations.SerializedName;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.UUID;
 
 @Setter
 @Getter
+@EqualsAndHashCode(of = {"componentId"})
+@ToString(of = {"componentId"})
 public abstract class AbstractComponent {
     @SerializedName("componentId")
     protected UUID componentId;

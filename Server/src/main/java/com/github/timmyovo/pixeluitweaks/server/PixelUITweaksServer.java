@@ -18,6 +18,7 @@ import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetwo
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
 import com.github.timmyovo.pixeluitweaks.server.config.*;
 import com.github.timmyovo.pixeluitweaks.server.listener.EventListener;
+import com.github.timmyovo.pixeluitweaks.server.manager.PlayerStateManager;
 import com.github.timmyovo.pixeluitweaks.server.packet.PacketManager;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -233,6 +234,7 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                         commandSender.sendMessage("CAN NOT FIND PLAYER");
                         return false;
                     }
+
                     Player finalPlayer = player;
                     getGuiConfiguration().getGuiEntryList().stream()
                             .filter(guiEntry -> guiEntry.getName().equalsIgnoreCase(strings[0]))
@@ -243,7 +245,9 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                                 } else {
                                     module.openScreen(finalPlayer, guiEntry.getGuiLayoutBase());
                                 }
+
                             });
+
                     return true;
                 })
                 .build()
