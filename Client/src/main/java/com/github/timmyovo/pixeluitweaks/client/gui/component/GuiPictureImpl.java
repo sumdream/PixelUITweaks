@@ -4,6 +4,7 @@ import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientRenderMethod;
 import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentPicture;
+import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Gui;
@@ -14,6 +15,7 @@ public class GuiPictureImpl extends Gui implements ClientComponent<ComponentPict
     private ComponentPicture componentPicture;
     private ClientRenderMethod clientRenderMethod;
     private boolean visible;
+    private boolean hovered;
 
     public GuiPictureImpl(ComponentPicture componentPicture) {
         this.componentPicture = componentPicture;
@@ -32,6 +34,16 @@ public class GuiPictureImpl extends Gui implements ClientComponent<ComponentPict
                 }
             }
         }
+    }
+
+    @Override
+    public ComponentPicture getComponentModel() {
+        return componentPicture;
+    }
+
+    @Override
+    public boolean isMouseOver() {
+        return false;
     }
 
     @Override

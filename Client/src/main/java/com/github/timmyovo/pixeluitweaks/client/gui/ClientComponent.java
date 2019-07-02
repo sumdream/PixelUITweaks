@@ -1,6 +1,7 @@
 package com.github.timmyovo.pixeluitweaks.client.gui;
 
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
+import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentTextField;
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
@@ -25,9 +26,7 @@ public interface ClientComponent<T extends AbstractComponent> {
     default void mouseReleased(int mouseX, int mouseY) {
     }
 
-    default ContentHover getHoverContent() {
-        return null;
-    }
+    T getComponentModel();
 
     void updateComponent(T componentModel);
 }

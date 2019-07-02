@@ -7,6 +7,7 @@ import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
 import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import com.github.timmyovo.pixeluitweaks.common.event.type.ButtonClickModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButton;
+import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -119,6 +120,16 @@ public class GuiButtonImpl extends Gui implements ClientComponent<ComponentButto
         PacketOutEvent.notifyEvent(GuiEventType.BUTTON_CLICK, ButtonClickModel.builder()
                 .componentButton(componentButton)
                 .build());
+    }
+
+    @Override
+    public boolean isMouseOver() {
+        return hovered;
+    }
+
+    @Override
+    public ComponentButton getComponentModel() {
+        return componentButton;
     }
 
     @Override

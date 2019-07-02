@@ -5,6 +5,7 @@ import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
 import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import com.github.timmyovo.pixeluitweaks.common.event.type.CheckBoxClickModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentCheckBox;
+import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -119,5 +120,15 @@ public class GuiCheckBoxImpl extends Gui implements ClientComponent<ComponentChe
         this.displayString = componentModel.getDisplayString();
         this.boxWidth = componentModel.getBoxWidth();
         this.visible = componentModel.isVisible();
+    }
+
+    @Override
+    public boolean isMouseOver() {
+        return hovered;
+    }
+
+    @Override
+    public ComponentCheckBox getComponentModel() {
+        return componentCheckBox;
     }
 }

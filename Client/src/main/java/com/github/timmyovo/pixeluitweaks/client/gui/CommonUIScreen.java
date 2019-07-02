@@ -105,9 +105,12 @@ public class CommonUIScreen extends GuiScreen {
                 if (!(abstractComponent instanceof ComponentSlot)) {
                     clientComponents.forEach(clientComponent -> {
                         clientComponent.render(mouseX, mouseY, partialTicks);
-                        ContentHover hoverContent = clientComponent.getHoverContent();
-                        if (clientComponent.isMouseOver() && hoverContent != null) {
-                            drawHoveringText(hoverContent.getHoverTexts(), mouseX, mouseY, this.width, this.height, Minecraft.getMinecraft().fontRenderer);
+
+                    });
+                    clientComponents.forEach(clientComponent -> {
+                        ContentHover contentHover = clientComponent.getComponentModel().getContentHover();
+                        if (clientComponent.isMouseOver() && contentHover != null) {
+                            drawHoveringText(contentHover.getHoverTexts(), mouseX, mouseY, this.width, this.height, Minecraft.getMinecraft().fontRenderer);
                         }
                     });
                 }

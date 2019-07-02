@@ -5,6 +5,7 @@ import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
 import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import com.github.timmyovo.pixeluitweaks.common.event.type.TextfieldInputModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentTextField;
+import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import com.google.common.base.Predicate;
 import lombok.Getter;
 import lombok.Setter;
@@ -67,6 +68,8 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
     private ComponentTextField componentTextField;
     private FontRenderer fontRenderer;
 
+    private boolean hovered;
+
     public GuiTextFieldImpl(ComponentTextField componentTextField) {
         this.componentTextField = componentTextField;
         updateComponent(componentTextField);
@@ -75,6 +78,7 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
     @Override
     public void render(int mouseX, int mouseY, float ticks) {
         drawTextBox();
+        this.hovered = mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height && isEnabled;
     }
 
     @Override
@@ -200,6 +204,11 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
         boolean flag = mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height && isEnabled;
         setFocused(flag);
         return flag;
+    }
+
+    @Override
+    public boolean isMouseOver() {
+        return hovered && !isFocused;
     }
 
     /**
@@ -726,5 +735,10 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
      */
     public void setVisible(boolean isVisible) {
         this.visible = isVisible;
+    }
+
+    @Override
+    public ComponentTextField getComponentModel() {
+        return componentTextField;
     }
 }

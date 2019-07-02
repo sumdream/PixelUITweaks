@@ -3,6 +3,7 @@ package com.github.timmyovo.pixeluitweaks.client.gui.component;
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
 import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.*;
+import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -185,6 +186,11 @@ public class GuiListContentImpl extends Gui implements ClientComponent<Component
         }
         clientComponent.render(mouseX, mouseY, (int) partialTicks);
 
+    }
+
+    @Override
+    public ComponentListContent getComponentModel() {
+        return componentListContent;
     }
 
     protected void drawHoveringText(List<String> textLines, int x, int y, int width, int height, FontRenderer font) {

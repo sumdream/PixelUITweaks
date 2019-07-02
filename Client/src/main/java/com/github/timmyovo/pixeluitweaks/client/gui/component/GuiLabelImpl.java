@@ -2,6 +2,7 @@ package com.github.timmyovo.pixeluitweaks.client.gui.component;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentLabel;
+import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,7 @@ public class GuiLabelImpl extends Gui implements ClientComponent<ComponentLabel>
     private boolean centered;
     private int textColor;
     private FontRenderer fontRenderer;
+    private boolean hovered;
 
     public GuiLabelImpl(ComponentLabel componentLabel) {
         this.componentLabel = componentLabel;
@@ -39,7 +41,7 @@ public class GuiLabelImpl extends Gui implements ClientComponent<ComponentLabel>
             this.drawLabelBackground(minecraft, mouseX, mouseY);
             int i = this.y + this.height / 2 + this.border / 2;
             int j = i - this.componentLabel.getLabels().size() * 10 / 2;
-
+            this.hovered = mouseX >= x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             for (int k = 0; k < this.componentLabel.getLabels().size(); ++k) {
                 if (this.centered) {
                     this.drawCenteredString(this.fontRenderer, this.componentLabel.getLabels().get(k), this.x + this.width / 2, j + k * 10, this.textColor);
@@ -92,5 +94,15 @@ public class GuiLabelImpl extends Gui implements ClientComponent<ComponentLabel>
 
     protected void drawLabelBackground(Minecraft mcIn, int mouseX, int mouseY) {
 
+    }
+
+    @Override
+    public boolean isMouseOver() {
+        return hovered;
+    }
+
+    @Override
+    public ComponentLabel getComponentModel() {
+        return componentLabel;
     }
 }
