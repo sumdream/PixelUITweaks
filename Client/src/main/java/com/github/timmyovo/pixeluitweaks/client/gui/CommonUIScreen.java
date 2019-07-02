@@ -98,7 +98,10 @@ public class CommonUIScreen extends GuiScreen {
                 ClientRenderMethod renderMethod = container.getClientRenderMethod();
 
                 for (ClientRenderMethod.ClientRenderEntry renderEntry : renderMethod.getEntryList()) {
+                    GlStateManager.color(1, 1, 1, 1);
+                    GlStateManager.enableBlend();
                     drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
+                    GlStateManager.disableBlend();
                 }
             }
             for (AbstractComponent abstractComponent : container.getComponentContainer().getComponentList()) {

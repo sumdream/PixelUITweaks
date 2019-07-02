@@ -117,7 +117,10 @@ public class SlotUIScreen extends GuiContainer {
             if (container.getComponentContainer().getRenderMethod() != null) {
                 ClientRenderMethod renderMethod = container.getClientRenderMethod();
                 for (ClientRenderMethod.ClientRenderEntry renderEntry : renderMethod.getEntryList()) {
+                    GlStateManager.color(1, 1, 1, 1);
+                    GlStateManager.enableBlend();
                     drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
+                    GlStateManager.disableBlend();
                 }
             }
             for (AbstractComponent abstractComponent : container.getComponentContainer().getComponentList()) {
@@ -125,7 +128,6 @@ public class SlotUIScreen extends GuiContainer {
                     clientComponents.forEach(clientComponent -> {
                         clientComponent.render(mouseX, mouseY, partialTicks);
                         ContentHover contentHover = clientComponent.getComponentModel().getContentHover();
-                        System.out.println(contentHover);
                         if (clientComponent.isMouseOver() && contentHover != null) {
                             drawHoveringText(contentHover.getHoverTexts(), mouseX, mouseY, this.width, this.height, Minecraft.getMinecraft().fontRenderer);
                         }
