@@ -3,6 +3,7 @@ package com.github.timmyovo.pixeluitweaks.server;
 import com.github.skystardust.ultracore.bukkit.commands.MainCommandSpec;
 import com.github.skystardust.ultracore.core.PluginInstance;
 import com.github.skystardust.ultracore.core.configuration.ConfigurationManager;
+import com.github.skystardust.ultracore.core.exceptions.ConfigurationException;
 import com.github.skystardust.ultracore.core.utils.FileUtils;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
@@ -18,7 +19,6 @@ import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetwo
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
 import com.github.timmyovo.pixeluitweaks.server.config.*;
 import com.github.timmyovo.pixeluitweaks.server.listener.EventListener;
-import com.github.timmyovo.pixeluitweaks.server.manager.PlayerStateManager;
 import com.github.timmyovo.pixeluitweaks.server.packet.PacketManager;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -35,8 +35,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.file.*;
 import java.util.*;
 import java.util.logging.Logger;
+
+import static com.sun.nio.file.ExtendedWatchEventModifier.FILE_TREE;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 @Getter
 public final class PixelUITweaksServer extends JavaPlugin implements PluginInstance {
@@ -142,6 +146,30 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
         readSidebar();
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL, new EventListener());
         openUICommand();
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            try {
+                FileSystem fs = FileSystems.getDefault();
+                WatchService ws = fs.newWatchService();
+                Path pTemp = Paths.get(getDataFolder().getPath());
+                pTemp.register(ws, new WatchEvent.Kind[]{ENTRY_MODIFY, ENTRY_CREATE, ENTRY_DELETE}, FILE_TREE);
+                WatchKey k = ws.take();
+                List<WatchEvent<?>> watchEvents = k.pollEvents();
+
+                if (watchEvents.stream()
+                        .anyMatch(watchEvent -> watchEvent.kind().equals(ENTRY_MODIFY))) {
+                    configurationManager.reloadFiles();
+                    return;
+                }
+//                for (WatchEvent<?> e : watchEvents)
+//                {
+//                    Object c = e.context();
+//                    getLogger().info("File: " + c + " Reloaded.");
+//                }
+                k.reset();
+            } catch (IOException | InterruptedException | ConfigurationException e) {
+                e.printStackTrace();
+            }
+        }, 0L, 10L);
     }
 
     private void openUICommand() {

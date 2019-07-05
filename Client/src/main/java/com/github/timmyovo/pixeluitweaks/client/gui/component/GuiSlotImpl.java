@@ -2,7 +2,6 @@ package com.github.timmyovo.pixeluitweaks.client.gui.component;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
-import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Gui;
@@ -19,6 +18,6 @@ public class GuiSlotImpl extends Gui implements ClientComponent<ComponentSlot> {
 
     @Override
     public void updateComponent(ComponentSlot componentModel) {
-
+        
     }
 }

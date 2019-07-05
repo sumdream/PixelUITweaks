@@ -45,7 +45,8 @@ public class SlotUIScreen extends GuiContainer {
                 Arrays.stream(guiContainers)
                         .map(ComponentContainer::getComponentList)
                         .filter(abstractComponents -> abstractComponents.stream().anyMatch(abstractComponent -> abstractComponent instanceof ComponentSlot))
-                        .map(abstractComponents -> abstractComponents.stream().filter(abstractComponent -> abstractComponent instanceof ComponentSlot).map(abstractComponent -> ((ComponentSlot) abstractComponent)).collect(Collectors.toList()))
+                        .map(abstractComponents -> abstractComponents.stream().filter(abstractComponent -> abstractComponent instanceof ComponentSlot)
+                                .map(abstractComponent -> ((ComponentSlot) abstractComponent)).collect(Collectors.toList()))
                         .collect(Collector.of(ArrayList::new, ArrayList::addAll, (left, right) -> {
                             left.addAll(right);
                             return left;
