@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
@@ -156,6 +155,9 @@ public class SlotUIScreen extends GuiContainer {
                 .keycode(keyCode)
                 .typedChar(typedChar)
                 .build());
+        if (keyCode == Keyboard.KEY_E) {
+            return;
+        }
         super.keyTyped(typedChar, keyCode);
     }
 
@@ -184,8 +186,8 @@ public class SlotUIScreen extends GuiContainer {
     protected void drawHoveringText(List<String> textLines, int x, int y, int width, int height, FontRenderer font) {
         if (!textLines.isEmpty()) {
             GlStateManager.disableRescaleNormal();
-            RenderHelper.disableStandardItemLighting();
-            GlStateManager.disableLighting();
+            //RenderHelper.disableStandardItemLighting();
+            //GlStateManager.disableLighting();
             GlStateManager.disableDepth();
             int i = 0;
 
@@ -239,9 +241,9 @@ public class SlotUIScreen extends GuiContainer {
             }
 
             this.zLevel = 0.0F;
-            GlStateManager.enableLighting();
+            //GlStateManager.enableLighting();
             GlStateManager.enableDepth();
-            RenderHelper.enableStandardItemLighting();
+            //RenderHelper.enableStandardItemLighting();
             GlStateManager.enableRescaleNormal();
         }
     }
