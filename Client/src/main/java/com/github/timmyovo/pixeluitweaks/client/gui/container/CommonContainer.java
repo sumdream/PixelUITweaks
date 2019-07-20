@@ -13,11 +13,13 @@ import java.util.List;
 public class CommonContainer extends Container {
     protected List<ComponentSlot> slots;
     private EntityPlayer entityPlayer;
+    private CommonInventory commonInventory;
 
     public CommonContainer(List<ComponentSlot> slots, EntityPlayer entityPlayer) {
         this.slots = slots;
         this.entityPlayer = entityPlayer;
         bindPlayerInventory(entityPlayer.inventory);
+        this.commonInventory = new CommonInventory("", false, 27);
         slots.stream()
                 .map(this::toMinecraftSlot)
                 .forEach(this::addSlotToContainer);
@@ -28,7 +30,7 @@ public class CommonContainer extends Container {
     }
 
     public Slot toMinecraftSlot(ComponentSlot componentSlot) {
-        return new Slot(entityPlayer.inventory, componentSlot.getSlotIndex(), componentSlot.getSlotX(), componentSlot.getSlotY());
+        return new Slot(commonInventory, componentSlot.getSlotIndex(), componentSlot.getSlotX(), componentSlot.getSlotY());
     }
 
     @Override

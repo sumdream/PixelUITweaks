@@ -44,9 +44,9 @@ import static java.nio.file.StandardWatchEventKinds.*;
 
 @Getter
 public final class PixelUITweaksServer extends JavaPlugin implements PluginInstance {
+    public static final String CHANNEL = "UT|EVENT";
     private static PixelUITweaksServer PIXEL_UI_TWEAKS_SERVER;
     private List<IComp> modules = new ArrayList<>();
-    public static final String CHANNEL = "UT|EVENT";
     private ConfigurationManager configurationManager;
 
     private GuiConfiguration guiConfiguration;

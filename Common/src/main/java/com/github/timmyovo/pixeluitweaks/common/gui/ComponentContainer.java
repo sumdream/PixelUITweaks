@@ -5,6 +5,7 @@ import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.TextureBinder;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode(of = {"componentList"})
 public class ComponentContainer {
     @SerializedName("height")
     private int height;

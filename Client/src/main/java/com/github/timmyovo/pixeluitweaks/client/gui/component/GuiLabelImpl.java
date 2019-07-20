@@ -2,7 +2,6 @@ package com.github.timmyovo.pixeluitweaks.client.gui.component;
 
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentLabel;
-import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -45,10 +44,10 @@ public class GuiLabelImpl extends Gui implements ClientComponent<ComponentLabel>
             for (int k = 0; k < this.componentLabel.getLabels().size(); ++k) {
                 if (this.centered) {
                     this.drawCenteredString(this.fontRenderer, this.componentLabel.getLabels().get(k), this.x + this.width / 2, j + k * 10, this.textColor);
-                    GlStateManager.color(1,1,1,1);
+                    GlStateManager.color(1, 1, 1, 1);
                 } else {
                     this.drawString(this.fontRenderer, this.componentLabel.getLabels().get(k), this.x, j + k * 10, this.textColor);
-                    GlStateManager.color(1,1,1,1);
+                    GlStateManager.color(1, 1, 1, 1);
                 }
             }
         }

@@ -1,8 +1,6 @@
 package com.github.timmyovo.pixeluitweaks.client.gui;
 
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
-import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentTextField;
-import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 

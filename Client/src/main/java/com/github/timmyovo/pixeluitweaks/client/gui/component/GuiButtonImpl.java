@@ -7,7 +7,6 @@ import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
 import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import com.github.timmyovo.pixeluitweaks.common.event.type.ButtonClickModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButton;
-import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;

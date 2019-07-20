@@ -31,7 +31,7 @@ def getCheckedOutGitCommitHash() {
     def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
     // def isRef = head.length > 1     // ref: refs/heads/master
 
-    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+    if (isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
 
     def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
     refHead.text.trim().take takeFromHash
@@ -40,7 +40,7 @@ def getCheckedOutGitCommitHash() {
 def commit_id = getCheckedOutGitCommitHash()
 
 
-version = modVersion+"#"+commit_id
+version = modVersion + "#" + commit_id
 group = modGroup
 archivesBaseName = modBaseName
 
@@ -100,12 +100,12 @@ artifacts {
 }
 
 build {
-    
+
     doLast {
         exec {
             def input_jar = jar.archivePath
             workingDir './'
-            commandLine 'java',"-jar","./obf/obf.jar","--config","./obf/obf.jocfg","--jarIn","${input_jar}","--jarOut","./build/libs//${jar.archiveName}_OBF.jar"
+            commandLine 'java', "-jar", "./obf/obf.jar", "--config", "./obf/obf.jocfg", "--jarIn", "${input_jar}", "--jarOut", "./build/libs//${jar.archiveName}_OBF.jar"
 
             //store the output instead of printing to the console:
             standardOutput = new ByteArrayOutputStream()
@@ -115,11 +115,11 @@ build {
                 return standardOutput.toString()
             }
         }
-        for(File f:new File(project.buildDir,"libs").listFiles()){
-            if(f!=null){
-                if(!f.getName().contains("OBF")){
+        for (File f : new File(project.buildDir, "libs").listFiles()) {
+            if (f != null) {
+                if (!f.getName().contains("OBF")) {
                     f.delete()
-                }else{
+                } else {
                     f.renameTo(jar.archivePath)
                 }
             }
@@ -127,7 +127,7 @@ build {
 
         copy {
             from jar.archivePath
-            into new File(rootProject.buildDir,"libs")
+            into new File(rootProject.buildDir, "libs")
         }
     }
 }

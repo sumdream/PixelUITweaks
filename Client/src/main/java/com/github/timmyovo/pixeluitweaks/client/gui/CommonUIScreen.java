@@ -137,9 +137,11 @@ public class CommonUIScreen extends GuiScreen {
                 .map(iServerGuiBase -> ((GuiListContentImpl) iServerGuiBase))
                 .forEach(guiListContent -> guiListContent.keyTyped(typedChar, keyCode));
         PacketOutEvent.notifyEvent(GuiEventType.KEYBOARD_EVENT, KeyboardInputModel.builder()
-                .componentContainer(componentContainerList)
-                .keycode(keyCode)
-                .typedChar(typedChar)
+                .inputEntry(KeyboardInputModel.InputEntry.builder()
+                        .componentContainer(componentContainerList)
+                        .keycode(keyCode)
+                        .typedChar(typedChar)
+                        .build())
                 .build());
         if (keyCode == Keyboard.KEY_E) {
             return;
@@ -153,10 +155,12 @@ public class CommonUIScreen extends GuiScreen {
                 .filter(clientComponent -> clientComponent.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
                 .forEach(clientComponent -> clientComponent.mouseReleased(mouseX, mouseY));
         PacketOutEvent.notifyEvent(GuiEventType.MOUSE_EVENT, MouseInputModel.builder()
-                .componentContainer(componentContainerList)
-                .mouseButton(mouseButton)
-                .mouseX(mouseX)
-                .mouseY(mouseY)
+                .mouseEventDataModel(MouseInputModel.MouseEventDataModel.builder()
+                        .componentContainer(componentContainerList)
+                        .mouseButton(mouseButton)
+                        .mouseX(mouseX)
+                        .mouseY(mouseY)
+                        .build())
                 .build());
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }

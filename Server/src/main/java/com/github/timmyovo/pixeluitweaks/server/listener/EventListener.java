@@ -62,27 +62,27 @@ public class EventListener implements PluginMessageListener {
                 case OPEN_SCREEN:
                     OpenScreenModel openScreenModel = GuiFactory.fromString(jsonString, OpenScreenModel.class);
                     Bukkit.getPluginManager().callEvent(new GuiOpenEvent(player, openScreenModel));
-                    PlayerStateManager.notifyPlayerGuiOpen(player,openScreenModel.getScreenContainers());
+                    PlayerStateManager.notifyPlayerGuiOpen(player, openScreenModel.getScreenContainers());
                     break;
                 case CLOSE_SCREEN:
                     CloseScreenModel closeScreenModel = GuiFactory.fromString(jsonString, CloseScreenModel.class);
                     Bukkit.getPluginManager().callEvent(new GuiCloseEvent(player, closeScreenModel));
-                    PlayerStateManager.notifyPlayerClose(player,closeScreenModel.getScreenContainers());
+                    PlayerStateManager.notifyPlayerClose(player, closeScreenModel.getScreenContainers());
                     break;
                 case OPEN_CONTAINER:
                     ContainerOpenModel containerOpenModel = GuiFactory.fromString(jsonString, ContainerOpenModel.class);
                     Bukkit.getPluginManager().callEvent(new ContainerOpenEvent(player, containerOpenModel));
-                    PlayerStateManager.notifyPlayerGuiOpen(player,containerOpenModel.getOpenedContainer());
+                    PlayerStateManager.notifyPlayerGuiOpen(player, containerOpenModel.getOpenedContainer());
                     break;
                 case CLOSE_CONTAINER:
                     ContainerCloseModel containerCloseModel = GuiFactory.fromString(jsonString, ContainerCloseModel.class);
                     Bukkit.getPluginManager().callEvent(new ContainerCloseEvent(player, containerCloseModel));
-                    PlayerStateManager.notifyPlayerClose(player,containerCloseModel.getClosedContainer());
+                    PlayerStateManager.notifyPlayerClose(player, containerCloseModel.getClosedContainer());
                     break;
                 case TEXTFIELD_INPUT:
                     TextfieldInputModel textfieldInputModel = GuiFactory.fromString(jsonString, TextfieldInputModel.class);
                     Bukkit.getPluginManager().callEvent(new TextfieldInputEvent(player, textfieldInputModel));
-                    PlayerStateManager.notifyInputTextChanged(player,textfieldInputModel.getComponentTextField(),textfieldInputModel.getInputText());
+                    PlayerStateManager.notifyInputTextChanged(player, textfieldInputModel.getComponentTextField(), textfieldInputModel.getInputText());
                     break;
             }
         } catch (IllegalArgumentException e) {

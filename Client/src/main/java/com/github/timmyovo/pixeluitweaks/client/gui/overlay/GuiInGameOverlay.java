@@ -13,7 +13,6 @@ public class GuiInGameOverlay extends Gui {
     private int height;
 
     public void onResolutionChanged(ScaledResolution scaledResolution) {
-        System.out.println(111);
         this.width = scaledResolution.getScaledWidth();
         this.height = scaledResolution.getScaledHeight();
         SidebarManager.updateClientModels();

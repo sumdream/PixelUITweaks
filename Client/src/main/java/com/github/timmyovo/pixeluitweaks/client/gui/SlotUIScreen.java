@@ -34,13 +34,7 @@ public class SlotUIScreen extends GuiContainer {
     private List<ClientComponent> clientComponents;
 
     public SlotUIScreen(EntityPlayer entityPlayer, ComponentContainer... guiContainers) {
-        super(null);
-        this.owner = entityPlayer;
-        this.componentContainerList = Arrays.stream(guiContainers).collect(Collectors.toList());
-        this.containers = Arrays.stream(guiContainers)
-                .map(ClientComponentContainer::from)
-                .collect(Collectors.toList());
-        this.inventorySlots = new CommonContainer(
+        super(new CommonContainer(
                 Arrays.stream(guiContainers)
                         .map(ComponentContainer::getComponentList)
                         .filter(abstractComponents -> abstractComponents.stream().anyMatch(abstractComponent -> abstractComponent instanceof ComponentSlot))
@@ -50,7 +44,12 @@ public class SlotUIScreen extends GuiContainer {
                             left.addAll(right);
                             return left;
                         })), entityPlayer
-        );
+        ));
+        this.owner = entityPlayer;
+        this.componentContainerList = Arrays.stream(guiContainers).collect(Collectors.toList());
+        this.containers = Arrays.stream(guiContainers)
+                .map(ClientComponentContainer::from)
+                .collect(Collectors.toList());
         for (ComponentContainer guiContainer : guiContainers) {
             addContainer(guiContainer);
         }
@@ -151,9 +150,11 @@ public class SlotUIScreen extends GuiContainer {
                 .map(iServerGuiBase -> ((GuiListContentImpl) iServerGuiBase))
                 .forEach(guiListContent -> guiListContent.keyTyped(typedChar, keyCode));
         PacketOutEvent.notifyEvent(GuiEventType.KEYBOARD_EVENT, KeyboardInputModel.builder()
-                .componentContainer(componentContainerList)
-                .keycode(keyCode)
-                .typedChar(typedChar)
+                .inputEntry(KeyboardInputModel.InputEntry.builder()
+                        .componentContainer(componentContainerList)
+                        .keycode(keyCode)
+                        .typedChar(typedChar)
+                        .build())
                 .build());
         if (keyCode == Keyboard.KEY_E) {
             return;
@@ -167,10 +168,12 @@ public class SlotUIScreen extends GuiContainer {
                 .filter(clientComponent -> clientComponent.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
                 .forEach(clientComponent -> clientComponent.mouseReleased(mouseX, mouseY));
         PacketOutEvent.notifyEvent(GuiEventType.MOUSE_EVENT, MouseInputModel.builder()
-                .componentContainer(componentContainerList)
-                .mouseButton(mouseButton)
-                .mouseX(mouseX)
-                .mouseY(mouseY)
+                .mouseEventDataModel(MouseInputModel.MouseEventDataModel.builder()
+                        .componentContainer(componentContainerList)
+                        .mouseButton(mouseButton)
+                        .mouseX(mouseX)
+                        .mouseY(mouseY)
+                        .build())
                 .build());
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }

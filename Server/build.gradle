@@ -12,7 +12,7 @@ def getCheckedOutGitCommitHash() {
     def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
     // def isRef = head.length > 1     // ref: refs/heads/master
 
-    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+    if (isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
 
     def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
     refHead.text.trim().take takeFromHash
@@ -22,7 +22,7 @@ def commit_id = getCheckedOutGitCommitHash()
 
 
 group = pluginGroup
-version = pluginVersion+"#${commit_id}"
+version = pluginVersion + "#${commit_id}"
 archivesBaseName = pluginBuildName
 
 sourceCompatibility = 1.8
@@ -69,7 +69,7 @@ dependencies {
 
 jar {
     configurations.shade.each { dep ->
-        from(project.zipTree(dep)){
+        from(project.zipTree(dep)) {
             exclude 'META-INF', 'META-INF/**'
             exclude 'dummyThing'
         }
@@ -80,7 +80,7 @@ build {
     doLast {
         copy {
             from jar.archivePath
-            into new File(rootProject.buildDir,"libs")
+            into new File(rootProject.buildDir, "libs")
         }
     }
 }

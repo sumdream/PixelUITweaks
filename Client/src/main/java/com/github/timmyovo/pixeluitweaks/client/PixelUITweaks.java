@@ -15,6 +15,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(
@@ -41,6 +43,8 @@ public class PixelUITweaks {
 
     private PacketManager packetManager;
 
+    private FMLEventChannel fmlEventChannel;
+
     /**
      * This is the first initialization event. Register tile entities here.
      * The registry events below will have fired prior to entry to this method.
@@ -52,6 +56,8 @@ public class PixelUITweaks {
         this.clientHook = new ClientHook().init();
         MinecraftForge.EVENT_BUS.register(new GuiInGameOverlay());
         MinecraftForge.EVENT_BUS.register(new EventListener());
+        fmlEventChannel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MOD_NAME);
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, packetManager);
     }
 
     /**

@@ -18,6 +18,6 @@ public class GuiSlotImpl extends Gui implements ClientComponent<ComponentSlot> {
 
     @Override
     public void updateComponent(ComponentSlot componentModel) {
-        
+
     }
 }

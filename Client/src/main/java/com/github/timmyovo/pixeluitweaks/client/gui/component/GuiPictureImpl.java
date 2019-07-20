@@ -4,7 +4,6 @@ import com.github.timmyovo.pixeluitweaks.client.gui.ClientComponent;
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientRenderMethod;
 import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentPicture;
-import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Gui;

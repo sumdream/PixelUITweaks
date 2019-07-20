@@ -5,7 +5,6 @@ import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
 import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import com.github.timmyovo.pixeluitweaks.common.event.type.CheckBoxClickModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentCheckBox;
-import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;

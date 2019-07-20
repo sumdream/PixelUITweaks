@@ -5,7 +5,6 @@ import com.github.timmyovo.pixeluitweaks.client.packet.out_.PacketOutEvent;
 import com.github.timmyovo.pixeluitweaks.common.event.GuiEventType;
 import com.github.timmyovo.pixeluitweaks.common.event.type.TextfieldInputModel;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentTextField;
-import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import com.google.common.base.Predicate;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,7 +83,7 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
     @Override
     public void updateComponent(ComponentTextField componentModel) {
         Minecraft mc = Minecraft.getMinecraft();
-		this.fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        this.fontRenderer = Minecraft.getMinecraft().fontRenderer;
         ScaledResolution scaledResolution = new ScaledResolution(mc);
         int scaledHeight = scaledResolution.getScaledHeight();
         int scaledWidth = scaledResolution.getScaledWidth();
@@ -443,7 +442,7 @@ public class GuiTextFieldImpl extends Gui implements ClientComponent<ComponentTe
 
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
-        mouseClicked(mouseX,mouseY, Mouse.getEventButton());
+        mouseClicked(mouseX, mouseY, Mouse.getEventButton());
     }
 
     /**

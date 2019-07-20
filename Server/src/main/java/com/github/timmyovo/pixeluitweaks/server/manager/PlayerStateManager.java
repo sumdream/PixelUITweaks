@@ -17,7 +17,7 @@ public class PlayerStateManager {
     private static List<InputRecorder> PLAYER_INPUT_RECORD_LIST = Lists.newArrayList();
     private static Map<UUID, List<ComponentContainer>> PLAYER_CURRENT_GUI_SCREEN = Maps.newConcurrentMap();
 
-    public static void notifyInputTextChanged(Player player, ComponentTextField componentTextField, String inputText){
+    public static void notifyInputTextChanged(Player player, ComponentTextField componentTextField, String inputText) {
         try {
             InputRecorder inputRecorder = getInputRecorder(player).orElseThrow(IllegalAccessException::new);
             inputRecorder.addRecordEntry(InputRecorder.InputRecordEntry.builder()
@@ -37,11 +37,11 @@ public class PlayerStateManager {
         }
     }
 
-    public static void notifyPlayerGuiOpen(Player player,List<ComponentContainer> componentContainer){
-        PlayerStateManager.PLAYER_CURRENT_GUI_SCREEN.put(player.getUniqueId(),componentContainer);
+    public static void notifyPlayerGuiOpen(Player player, List<ComponentContainer> componentContainer) {
+        PlayerStateManager.PLAYER_CURRENT_GUI_SCREEN.put(player.getUniqueId(), componentContainer);
     }
 
-    public static void notifyPlayerClose(Player player,List<ComponentContainer> componentContainer){
+    public static void notifyPlayerClose(Player player, List<ComponentContainer> componentContainer) {
         PlayerStateManager.PLAYER_CURRENT_GUI_SCREEN.remove(player.getUniqueId());
     }
 
@@ -49,21 +49,21 @@ public class PlayerStateManager {
         return getInputRecorder(player.getUniqueId());
     }
 
-    public static Optional<InputRecorder> getInputRecorder(UUID uuid){
+    public static Optional<InputRecorder> getInputRecorder(UUID uuid) {
         return PLAYER_INPUT_RECORD_LIST.stream()
-                .filter(u->u.getPlayer().equals(uuid))
+                .filter(u -> u.getPlayer().equals(uuid))
                 .findAny();
     }
 
-    public static Optional<List<ComponentContainer>> getPlayerCurrentContainers(UUID uuid){
+    public static Optional<List<ComponentContainer>> getPlayerCurrentContainers(UUID uuid) {
         return Optional.ofNullable(PLAYER_CURRENT_GUI_SCREEN.get(uuid));
     }
 
-    public static Optional<List<ComponentContainer>> getPlayerCurrentContainers(Player player){
+    public static Optional<List<ComponentContainer>> getPlayerCurrentContainers(Player player) {
         return getPlayerCurrentContainers(player.getUniqueId());
     }
 
-    public static boolean isPlayerOpenedScreen(Player player){
+    public static boolean isPlayerOpenedScreen(Player player) {
         return getPlayerCurrentContainers(player.getUniqueId()).isPresent();
     }
 
@@ -79,11 +79,11 @@ public class PlayerStateManager {
             this.inputRecordEntryList = Lists.newArrayList();
         }
 
-        public Player asBukkitPlayer(){
+        public Player asBukkitPlayer() {
             return Bukkit.getPlayer(player);
         }
 
-        public void addRecordEntry(InputRecordEntry inputRecordEntry){
+        public void addRecordEntry(InputRecordEntry inputRecordEntry) {
             if (inputRecordEntryList.stream()
                     .filter(inputRecordEntry1 -> inputRecordEntry1.getComponentTextField().equals(inputRecordEntry.getComponentTextField()))
                     .peek(inputRecordEntry1 -> inputRecordEntry1.setCurrentText(inputRecordEntry.getCurrentText()))
@@ -97,7 +97,7 @@ public class PlayerStateManager {
         @AllArgsConstructor
         @NoArgsConstructor
         @Builder
-        public static class InputRecordEntry{
+        public static class InputRecordEntry {
             private String currentText;
             private ComponentTextField componentTextField;
         }

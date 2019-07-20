@@ -4,17 +4,38 @@ import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
 import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.Sidebar;
-import com.github.timmyovo.pixeluitweaks.server.container.CommonContainer;
+import com.github.timmyovo.pixeluitweaks.server.inventory.ItemHandler;
+import com.github.timmyovo.pixeluitweaks.server.inventory.ServerDummyContainer;
+import com.github.timmyovo.pixeluitweaks.server.inventory.network.OpenGui;
 import com.github.timmyovo.pixeluitweaks.server.packet.out_.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import net.minecraft.server.v1_12_R1.Container;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.PacketDataSerializer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutCustomPayload;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class PacketManager implements IComp<PacketManager> {
+    public static void openGui(EntityPlayer entityPlayer, Container container, int hashcode) {
+        int windowId = entityPlayer.nextContainerCounter();
+        entityPlayer.closeInventory();
+
+        OpenGui examplemod = new OpenGui(windowId, "pixeluitweaks", hashcode, 0, 0, 0);
+        ByteBuf buffer = Unpooled.buffer();
+        buffer.writeByte(1);
+        examplemod.toBytes(buffer);
+        PacketPlayOutCustomPayload wslnm = new PacketPlayOutCustomPayload("FML", new PacketDataSerializer(buffer));
+        entityPlayer.playerConnection.sendPacket(wslnm);
+        entityPlayer.activeContainer = container;
+        entityPlayer.activeContainer.windowId = windowId;
+        entityPlayer.activeContainer.addSlotListener(entityPlayer);
+    }
+
     public void openScreen(Player player, ComponentContainer componentContainer) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
         PacketInOpenScreen packetInOpenScreen = new PacketInOpenScreen(componentContainer);
@@ -23,18 +44,13 @@ public class PacketManager implements IComp<PacketManager> {
 
     public void openContainerScreen(Player player, ComponentContainer componentContainer) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        int windowId = handle.nextContainerCounter();
-        handle.r();
-        List<ComponentSlot> collect = componentContainer.getComponentList()
+        PacketInOpenContainerScreen packetInOpenContainerScreen = new PacketInOpenContainerScreen(0, componentContainer);
+        packetInOpenContainerScreen.sendPacket(handle);
+        openGui(handle, new ServerDummyContainer(handle, new ItemHandler(4), componentContainer.getComponentList()
                 .stream()
                 .filter(abstractComponent -> abstractComponent instanceof ComponentSlot)
                 .map(abstractComponent -> ((ComponentSlot) abstractComponent))
-                .collect(Collectors.toList());
-        handle.activeContainer = new CommonContainer(collect, handle);
-        handle.activeContainer.windowId = windowId;
-        handle.activeContainer.addSlotListener(handle);
-        PacketInOpenContainerScreen packetInOpenContainerScreen = new PacketInOpenContainerScreen(windowId, componentContainer);
-        packetInOpenContainerScreen.sendPacket(handle);
+                .collect(Collectors.toList())), componentContainer.hashCode());
     }
 
     public void addContainer(Player player, ComponentContainer componentContainer) {

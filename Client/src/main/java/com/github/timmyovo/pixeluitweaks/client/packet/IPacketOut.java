@@ -9,6 +9,7 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
 
 public interface IPacketOut {
     String CHANNEL = "UT|EVENT";
+
     void writePacket(PacketBuffer packetBuffer);
 
     default void sendPacket() {

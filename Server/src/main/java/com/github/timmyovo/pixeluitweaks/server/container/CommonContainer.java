@@ -1,62 +1,47 @@
 package com.github.timmyovo.pixeluitweaks.server.container;
 
-import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventory;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryDoubleChest;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryView;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-
-import java.util.List;
 
 public class CommonContainer extends Container {
-    protected List<ComponentSlot> componentSlots;
-    private EntityPlayer entityPlayer;
+    private final IInventory container;
+    private final int line;
     private CraftInventoryView bukkitEntity = null;
-    private IInventory container;
+    private PlayerInventory player;
 
-    public CommonContainer(List<ComponentSlot> componentSlots, EntityPlayer entityPlayer) {
-        this.componentSlots = componentSlots;
-        this.entityPlayer = entityPlayer;
-        this.container = new CommonInventory("", false, 36 + componentSlots.size());
-        bindPlayerInventory(entityPlayer.inventory);
-        componentSlots.stream()
-                .map(this::toMinecraftSlot)
-                .forEach(this::a);
-    }
+    public CommonContainer(IInventory playerInv, IInventory chestInv, EntityHuman entityhuman) {
+        this.container = chestInv;
+        this.line = chestInv.getSize() / 9;
+        chestInv.startOpen(entityhuman);
+        int i = (this.line - 4) * 18;
+        this.player = (PlayerInventory) playerInv;
 
-    private static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
-        return stackB.getItem() == stackA.getItem() && (!stackA.usesData() || stackA.getData() == stackB.getData()) && ItemStack.equals(stackA, stackB);
-    }
-
-    public Slot toMinecraftSlot(ComponentSlot componentSlot) {
-        return new Slot(entityPlayer.inventory, componentSlot.getSlotIndex(), componentSlot.getSlotX(), componentSlot.getSlotY());
-    }
-
-
-    @Override
-    public boolean canUse(EntityHuman entityHuman) {
-        return true;
-    }
-
-    protected void bindPlayerInventory(IInventory playerInventory) {
-        //player inventory
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                int index = j + i * 9 + 9;
-                this.a(new Slot(playerInventory, index, 8 + j * 18, 84 + i * 18));
+        int j;
+        int k;
+        for (j = 0; j < this.line; ++j) {
+            for (k = 0; k < 9; ++k) {
+                int i1 = k + j * 9;
+                this.a(new Slot(chestInv, i1, 8 + k * 18, 18 + j * 18));
             }
         }
-        //hotbar
-        for (int k = 0; k < 9; ++k) {
-            this.a(new Slot(playerInventory, k, 8 + k * 18, 142));
+
+        for (j = 0; j < 3; ++j) {
+            for (k = 0; k < 9; ++k) {
+                this.a(new Slot(playerInv, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
+            }
         }
+
+        for (j = 0; j < 9; ++j) {
+            this.a(new Slot(playerInv, j, 8 + j * 18, 161 + i));
+        }
+
     }
 
-    @Override
-    public InventoryView getBukkitView() {
+    public CraftInventoryView getBukkitView() {
         if (this.bukkitEntity != null) {
             return this.bukkitEntity;
         } else {
@@ -69,29 +54,30 @@ public class CommonContainer extends Container {
                 inventory = new CraftInventory(this.container);
             }
 
-            this.bukkitEntity = new CraftInventoryView(this.entityPlayer.getBukkitEntity(), (Inventory) inventory, this);
+            this.bukkitEntity = new CraftInventoryView(this.player.player.getBukkitEntity(), (Inventory) inventory, this);
             return this.bukkitEntity;
         }
     }
 
-    @Override
-    public ItemStack shiftClick(EntityHuman entityhuman, int index) {
-        ItemStack itemstack = ItemStack.a;
-        Slot slot = (Slot) this.slots.get(index);
+    public boolean canUse(EntityHuman entityhuman) {
+        return !this.checkReachable ? true : this.container.a(entityhuman);
+    }
 
+    public ItemStack shiftClick(EntityHuman entityhuman, int i) {
+        ItemStack itemstack = ItemStack.a;
+        Slot slot = (Slot) this.slots.get(i);
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.cloneItemStack();
-
-            if (index < slots.size()) {
-                if (!this.a(itemstack1, slots.size(), this.slots.size(), true)) {
+            if (i < this.line * 9) {
+                if (!this.a(itemstack1, this.line * 9, this.slots.size(), true)) {
                     return ItemStack.a;
                 }
-            } else if (!this.a(itemstack1, 0, slots.size(), false)) {
+            } else if (!this.a(itemstack1, 0, this.line * 9, false)) {
                 return ItemStack.a;
             }
 
-            if (itemstack1.getCount() == 0) {
+            if (itemstack1.isEmpty()) {
                 slot.set(ItemStack.a);
             } else {
                 slot.f();
@@ -101,74 +87,12 @@ public class CommonContainer extends Container {
         return itemstack;
     }
 
-    @Override
-    protected boolean a(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
-        boolean flag = false;
-        int i = startIndex;
-        if (reverseDirection) i = endIndex - 1;
-
-        if (stack.isStackable()) {
-            while (stack.getCount() > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex)) {
-                Slot slot = (Slot) this.slots.get(i);
-                ItemStack itemstack = slot.getItem();
-                int maxLimit = Math.min(stack.getMaxStackSize(), slot.getMaxStackSize());
-
-                if (!itemstack.isEmpty() && areItemStacksEqual(stack, itemstack)) {
-                    int j = itemstack.getCount() + stack.getCount();
-                    if (j <= maxLimit) {
-                        stack.setCount(0);
-                        itemstack.setCount(j);
-                        slot.f();
-                        flag = true;
-
-                    } else if (itemstack.getCount() < maxLimit) {
-                        stack.subtract(maxLimit - itemstack.getCount());
-                        itemstack.setCount(maxLimit);
-                        slot.f();
-                        flag = true;
-                    }
-                }
-                if (reverseDirection) {
-                    --i;
-                } else ++i;
-            }
-        }
-        if (stack.getCount() > 0) {
-            if (reverseDirection) {
-                i = endIndex - 1;
-            } else i = startIndex;
-
-            while (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex) {
-                Slot slot1 = (Slot) this.slots.get(i);
-                ItemStack itemstack1 = slot1.getItem();
-
-                if (itemstack1.isEmpty() && slot1.isAllowed(stack)) { // Forge: Make sure to respect isItemValid in the slot.
-                    if (stack.getCount() <= slot1.getMaxStackSize()) {
-                        slot1.set(stack.cloneItemStack());
-                        slot1.f();
-                        stack.setCount(0);
-                        flag = true;
-                        break;
-                    } else {
-                        itemstack1 = stack.cloneItemStack();
-                        stack.subtract(slot1.getMaxStackSize());
-                        itemstack1.setCount(slot1.getMaxStackSize());
-                        slot1.set(itemstack1);
-                        slot1.f();
-                        flag = true;
-                    }
-                }
-                if (reverseDirection) {
-                    --i;
-                } else ++i;
-            }
-        }
-        return flag;
+    public void b(EntityHuman entityhuman) {
+        super.b(entityhuman);
+        this.container.closeContainer(entityhuman);
     }
 
-    @Override
-    public ItemStack a(int i, int j, InventoryClickType inventoryclicktype, EntityHuman entityhuman) {
-        ItemStack a = super.a(i, j, inventoryclicktype, entityhuman);
-        return a;
+    public IInventory e() {
+        return this.container;
     }
 }
