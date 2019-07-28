@@ -3,7 +3,9 @@ package com.github.timmyovo.pixeluitweaks.client.gui.overlay;
 import com.github.timmyovo.pixeluitweaks.client.gui.ClientRenderMethod;
 import com.github.timmyovo.pixeluitweaks.client.hook.SidebarManager;
 import com.github.timmyovo.pixeluitweaks.client.packet.manager.LocalDataManager;
+import com.github.timmyovo.pixeluitweaks.client.utils.TextureUtils;
 import com.github.timmyovo.pixeluitweaks.common.gui.InGameOverlays;
+import com.github.timmyovo.pixeluitweaks.common.render.texture.TextureBinder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -53,17 +55,16 @@ public class GuiInGameOverlay extends Gui {
         }
         InGameOverlays inGameOverlays = LocalDataManager.getInGameOverlays();
         if (inGameOverlays != null) {
-            inGameOverlays.getRenderMethodList()
-                    .stream()
-                    .map(ClientRenderMethod::fromRenderMethod)
-                    .forEach(clientRenderMethod -> {
-                        for (ClientRenderMethod.ClientRenderEntry renderEntry : clientRenderMethod.getEntryList()) {
-                            GlStateManager.color(1, 1, 1, 1);
-                            GlStateManager.enableBlend();
-                            drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
-                            GlStateManager.disableBlend();
-                        }
-                    });
+            ClientRenderMethod clientRenderMethod = ClientRenderMethod.fromRenderMethod(inGameOverlays.getRenderMethod());
+            TextureBinder textureBinder = inGameOverlays.getTextureBinder();
+            TextureUtils.tryBindTexture(textureBinder);
+            for (ClientRenderMethod.ClientRenderEntry renderEntry : clientRenderMethod.getEntryList()) {
+                GlStateManager.color(1, 1, 1, 1);
+                GlStateManager.enableBlend();
+                drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
+                GlStateManager.disableBlend();
+            }
+
         }
     }
 }
