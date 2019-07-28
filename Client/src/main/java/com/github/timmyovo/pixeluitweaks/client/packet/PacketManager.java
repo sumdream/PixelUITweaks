@@ -7,7 +7,7 @@ import com.github.timmyovo.pixeluitweaks.client.packet.manager.LocalDataManager;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
-import com.github.timmyovo.pixeluitweaks.common.packet.PacketInTypes;
+import com.github.timmyovo.pixeluitweaks.common.packet.PacketTypes;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -64,13 +64,13 @@ public class PacketManager implements IComp<PacketManager>, IGuiHandler {
 
     @Override
     public PacketManager init() {
-        registerPacketIn(PacketInTypes.AddContainer.name(), new PacketInAddContainer());
-        registerPacketIn(PacketInTypes.CloseScreen.name(), new PacketInCloseScreen());
-        registerPacketIn(PacketInTypes.OpenContainerScreen.name(), new PacketInOpenContainerScreen());
-        registerPacketIn(PacketInTypes.OpenScreen.name(), new PacketInOpenScreen());
-        registerPacketIn(PacketInTypes.RecvTexture.name(), new PacketInRecvTexture());
-        registerPacketIn(PacketInTypes.RemoveContainer.name(), new PacketInRemoveContainer());
-        registerPacketIn(PacketInTypes.UpdateOverlayContent.name(), new PacketUpdateOverlayListContent());
+        registerPacketIn(PacketTypes.AddContainer.name(), new PacketInAddContainer());
+        registerPacketIn(PacketTypes.CloseScreen.name(), new PacketInCloseScreen());
+        registerPacketIn(PacketTypes.OpenContainerScreen.name(), new PacketInOpenContainerScreen());
+        registerPacketIn(PacketTypes.OpenScreen.name(), new PacketInOpenScreen());
+        registerPacketIn(PacketTypes.RecvTexture.name(), new PacketInRecvTexture());
+        registerPacketIn(PacketTypes.RemoveContainer.name(), new PacketInRemoveContainer());
+        registerPacketIn(PacketTypes.UpdateCustomScoreboard.name(), new PacketUpdateOverlayListContent());
         return this;
     }
 

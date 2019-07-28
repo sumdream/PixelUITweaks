@@ -2,6 +2,7 @@ package com.github.timmyovo.pixeluitweaks.server.packet;
 
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
+import com.github.timmyovo.pixeluitweaks.common.gui.InGameOverlays;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
 import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.Sidebar;
 import com.github.timmyovo.pixeluitweaks.server.inventory.ItemHandler;
@@ -38,14 +39,14 @@ public class PacketManager implements IComp<PacketManager> {
 
     public void openScreen(Player player, ComponentContainer componentContainer) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        PacketInOpenScreen packetInOpenScreen = new PacketInOpenScreen(componentContainer);
-        packetInOpenScreen.sendPacket(handle);
+        PacketOutOpenScreen packetOutOpenScreen = new PacketOutOpenScreen(componentContainer);
+        packetOutOpenScreen.sendPacket(handle);
     }
 
     public void openContainerScreen(Player player, ComponentContainer componentContainer) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        PacketInOpenContainerScreen packetInOpenContainerScreen = new PacketInOpenContainerScreen(0, componentContainer);
-        packetInOpenContainerScreen.sendPacket(handle);
+        PacketOutOpenContainerScreen packetOutOpenContainerScreen = new PacketOutOpenContainerScreen(0, componentContainer);
+        packetOutOpenContainerScreen.sendPacket(handle);
         openGui(handle, new ServerDummyContainer(handle, new ItemHandler(4), componentContainer.getComponentList()
                 .stream()
                 .filter(abstractComponent -> abstractComponent instanceof ComponentSlot)
@@ -55,32 +56,38 @@ public class PacketManager implements IComp<PacketManager> {
 
     public void addContainer(Player player, ComponentContainer componentContainer) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        PacketInAddContainer packetInAddContainer = new PacketInAddContainer(componentContainer);
-        packetInAddContainer.sendPacket(handle);
+        PacketOutAddContainer packetOutAddContainer = new PacketOutAddContainer(componentContainer);
+        packetOutAddContainer.sendPacket(handle);
     }
 
     public void removeContainer(Player player, ComponentContainer componentContainer) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        PacketInRemoveContainer packetInRemoveContainer = new PacketInRemoveContainer(componentContainer);
-        packetInRemoveContainer.sendPacket(handle);
+        PacketOutRemoveContainer packetOutRemoveContainer = new PacketOutRemoveContainer(componentContainer);
+        packetOutRemoveContainer.sendPacket(handle);
     }
 
     public void closePlayerGui(Player player) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        PacketInCloseScreen packetInCloseScreen = new PacketInCloseScreen();
-        packetInCloseScreen.sendPacket(handle);
+        PacketOutCloseScreen packetOutCloseScreen = new PacketOutCloseScreen();
+        packetOutCloseScreen.sendPacket(handle);
     }
 
     public void sendTextureToPlayer(Player player, String name, BufferedImage bufferedImage) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        PacketInRecvTexture packetInRecvTexture = new PacketInRecvTexture(name, bufferedImage);
-        packetInRecvTexture.sendPacket(handle);
+        PacketOutRecvTexture packetOutRecvTexture = new PacketOutRecvTexture(name, bufferedImage);
+        packetOutRecvTexture.sendPacket(handle);
     }
 
     public void sendListContent(Player player, Sidebar sidebar) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
         PacketOutListContent packetOutListContent = new PacketOutListContent(sidebar);
         packetOutListContent.sendPacket(handle);
+    }
+
+    public void setPlayerOverlay(Player player, InGameOverlays inGameOverlays) {
+        EntityPlayer handle = ((CraftPlayer) player).getHandle();
+        PacketOutSetOverlays packetOutSetOverlays = new PacketOutSetOverlays(inGameOverlays);
+        packetOutSetOverlays.sendPacket(handle);
     }
 
     @Override

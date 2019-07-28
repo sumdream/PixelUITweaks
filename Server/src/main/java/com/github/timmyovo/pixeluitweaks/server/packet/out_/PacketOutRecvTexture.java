@@ -1,6 +1,6 @@
 package com.github.timmyovo.pixeluitweaks.server.packet.out_;
 
-import com.github.timmyovo.pixeluitweaks.common.packet.PacketInTypes;
+import com.github.timmyovo.pixeluitweaks.common.packet.PacketTypes;
 import com.github.timmyovo.pixeluitweaks.server.packet.IPacketOut;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 
@@ -9,11 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class PacketInRecvTexture implements IPacketOut {
+public class PacketOutRecvTexture implements IPacketOut {
     private String name;
     private BufferedImage image;
 
-    public PacketInRecvTexture(String name, BufferedImage image) {
+    public PacketOutRecvTexture(String name, BufferedImage image) {
         this.name = name;
         this.image = image;
     }
@@ -38,6 +38,6 @@ public class PacketInRecvTexture implements IPacketOut {
 
     @Override
     public String getPacketType() {
-        return PacketInTypes.RecvTexture.name();
+        return PacketTypes.RecvTexture.name();
     }
 }
