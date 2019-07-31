@@ -6,7 +6,7 @@ import com.github.timmyovo.pixeluitweaks.client.gui.container.CommonContainer;
 import com.github.timmyovo.pixeluitweaks.client.texture.IDownloadTexture;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
-import com.github.timmyovo.pixeluitweaks.common.packet.PacketInTypes;
+import com.github.timmyovo.pixeluitweaks.common.packet.PacketTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -48,7 +48,7 @@ public class ClientHook implements IComp<ClientHook> {
 
     @Override
     public ClientHook init() {
-        for (PacketInTypes value : PacketInTypes.values()) {
+        for (PacketTypes value : PacketTypes.values()) {
             NetworkRegistry.INSTANCE.newEventDrivenChannel(value.name()).register(PixelUITweaks.INSTANCE.getPacketManager());
         }
         return this;

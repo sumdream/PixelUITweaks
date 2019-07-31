@@ -2,25 +2,24 @@ package com.github.timmyovo.pixeluitweaks.server.packet.out_;
 
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
-import com.github.timmyovo.pixeluitweaks.common.packet.PacketInTypes;
+import com.github.timmyovo.pixeluitweaks.common.packet.PacketTypes;
 import com.github.timmyovo.pixeluitweaks.server.packet.IPacketOut;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 
-public class PacketInRemoveContainer implements IPacketOut {
+public class PacketOutAddContainer implements IPacketOut {
     private ComponentContainer componentContainer;
 
-    public PacketInRemoveContainer(ComponentContainer componentContainer) {
+    public PacketOutAddContainer(ComponentContainer componentContainer) {
         this.componentContainer = componentContainer;
     }
 
     @Override
     public void writePacket(PacketDataSerializer packetBuffer) {
-        String json = GuiFactory.GSON.toJson(componentContainer);
-        packetBuffer.a(json);
+        packetBuffer.a(GuiFactory.GSON.toJson(componentContainer));
     }
 
     @Override
     public String getPacketType() {
-        return PacketInTypes.RemoveContainer.name();
+        return PacketTypes.AddContainer.name();
     }
 }

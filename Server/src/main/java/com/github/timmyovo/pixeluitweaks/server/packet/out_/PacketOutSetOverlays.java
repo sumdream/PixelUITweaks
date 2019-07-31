@@ -1,25 +1,25 @@
 package com.github.timmyovo.pixeluitweaks.server.packet.out_;
 
-import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.Sidebar;
+import com.github.timmyovo.pixeluitweaks.common.gui.InGameOverlays;
 import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
 import com.github.timmyovo.pixeluitweaks.common.packet.PacketTypes;
 import com.github.timmyovo.pixeluitweaks.server.packet.IPacketOut;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 
-public class PacketOutListContent implements IPacketOut {
-    private Sidebar sidebar;
+public class PacketOutSetOverlays implements IPacketOut {
+    private InGameOverlays inGameOverlays;
 
-    public PacketOutListContent(Sidebar sidebar) {
-        this.sidebar = sidebar;
+    public PacketOutSetOverlays(InGameOverlays inGameOverlays) {
+        this.inGameOverlays = inGameOverlays;
     }
 
     @Override
     public void writePacket(PacketDataSerializer packetBuffer) {
-        packetBuffer.a(GuiFactory.GSON.toJson(sidebar));
+        packetBuffer.a(GuiFactory.GSON.toJson(inGameOverlays));
     }
 
     @Override
     public String getPacketType() {
-        return PacketTypes.UpdateCustomScoreboard.name();
+        return PacketTypes.UpdateGameOverlay.name();
     }
 }
