@@ -39,7 +39,7 @@ public class TextureUtils {
                 return;
             }
             if (textureBinder instanceof WebTextureBinder) {
-
+                tryBindWebImage(((WebTextureBinder) textureBinder).getUrl());
             }
         }
     }
