@@ -20,23 +20,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CommonUIScreen extends GuiScreen {
     private EntityPlayer owner;
     private List<ComponentContainer> componentContainerList;
-    private List<ClientComponentContainer> containers;
+    private Set<ClientComponentContainer> containers;
     private List<ClientComponent> clientComponents;
 
     public CommonUIScreen(EntityPlayer entityPlayer, ComponentContainer... guiContainers) {
         this.owner = entityPlayer;
         this.componentContainerList = Arrays.stream(guiContainers).collect(Collectors.toList());
-        this.containers = Arrays.stream(guiContainers)
+        this.containers = new HashSet<>();
+        this.containers.addAll(Arrays.stream(guiContainers)
                 .map(ClientComponentContainer::from)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
         for (ComponentContainer guiContainer : guiContainers) {
             addContainer(guiContainer);
         }
@@ -74,12 +73,15 @@ public class CommonUIScreen extends GuiScreen {
                 }
                 if (abstractComponent instanceof ComponentPicture) {
                     clientComponents.add(new GuiPictureImpl(((ComponentPicture) abstractComponent)));
+                    return;
                 }
                 if (abstractComponent instanceof ComponentCheckBox) {
                     clientComponents.add(new GuiCheckBoxImpl(((ComponentCheckBox) abstractComponent)));
+                    return;
                 }
                 if (abstractComponent instanceof ComponentTextField) {
                     clientComponents.add(new GuiTextFieldImpl(((ComponentTextField) abstractComponent)));
+                    return;
                 }
             });
         }
@@ -153,7 +155,9 @@ public class CommonUIScreen extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         clientComponents.stream()
                 .filter(clientComponent -> clientComponent.mousePressed(Minecraft.getMinecraft(), mouseX, mouseY))
-                .forEach(clientComponent -> clientComponent.mouseReleased(mouseX, mouseY));
+                .forEach(clientComponent -> {
+                    clientComponent.mouseReleased(mouseX, mouseY);
+                });
         PacketOutEvent.notifyEvent(GuiEventType.MOUSE_EVENT, MouseInputModel.builder()
                 .mouseEventDataModel(MouseInputModel.MouseEventDataModel.builder()
                         .componentContainer(componentContainerList)

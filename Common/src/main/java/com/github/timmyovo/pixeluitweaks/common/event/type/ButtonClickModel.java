@@ -18,7 +18,7 @@ public class ButtonClickModel implements ComponentEventModel<ComponentButton, Ob
 
     @Override
     public ComponentButton getComponentModel() {
-        return null;
+        return componentButton;
     }
 
     @Override

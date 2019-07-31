@@ -19,6 +19,7 @@ import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetwo
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
 import com.github.timmyovo.pixeluitweaks.server.config.*;
 import com.github.timmyovo.pixeluitweaks.server.listener.EventListener;
+import com.github.timmyovo.pixeluitweaks.server.manager.CallbackManager;
 import com.github.timmyovo.pixeluitweaks.server.packet.PacketManager;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -65,17 +66,21 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
     }
 
     private ComponentContainer exampleContainer() {
+        ComponentButton testButton1 = ComponentButton.newBuilder()
+                .withHeight("16")
+                .withWidth("48")
+                .withDisplayString("TestButton1")
+                .withVisible(true)
+                .withXPos("10")
+                .withYPos("10")
+                .build();
+        getModule(CallbackManager.class).registerComponentCallback(testButton1, componentEventModel -> {
+            System.out.println("a8105 sb!");
+        });
         return ComponentContainer.builder()
                 .width(256)
                 .height(256)
-                .componentList(Arrays.asList(ComponentButton.newBuilder()
-                                .withHeight("16")
-                                .withWidth("48")
-                                .withDisplayString("TestButton1")
-                                .withVisible(true)
-                                .withXPos("10")
-                                .withYPos("10")
-                                .build(),
+                .componentList(Arrays.asList(testButton1,
                         ComponentCheckBox.newBuilder()
                                 .withTextureBinder(WebTextureBinder.newBuilder()
                                         .withUrl("https://www.baidu.com")
@@ -130,6 +135,7 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
     public void onEnable() {
         PIXEL_UI_TWEAKS_SERVER = this;
         this.modules.add(new PacketManager().init());
+        this.modules.add(new CallbackManager().init());
         try {
             Field field = FileUtils.class.getField("GSON");
             field.setAccessible(true);
@@ -145,7 +151,6 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
         uiCommandInit();
         readSidebar();
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL, new EventListener());
-        openUICommand();
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
             try {
                 FileSystem fs = FileSystems.getDefault();
@@ -160,11 +165,6 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                     configurationManager.reloadFiles();
                     return;
                 }
-//                for (WatchEvent<?> e : watchEvents)
-//                {
-//                    Object c = e.context();
-//                    getLogger().info("File: " + c + " Reloaded.");
-//                }
                 k.reset();
             } catch (IOException | InterruptedException | ConfigurationException e) {
                 e.printStackTrace();
