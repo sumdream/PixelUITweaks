@@ -8,6 +8,7 @@ import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.LocalTexture
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -76,6 +77,8 @@ public class TextureUtils {
                 }
                 iDownloadTexture.bind();
             }
+        } else {
+            GlStateManager.bindTexture(0);
         }
 
     }
