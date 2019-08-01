@@ -7,6 +7,7 @@ import com.github.skystardust.ultracore.core.exceptions.ConfigurationException;
 import com.github.skystardust.ultracore.core.utils.FileUtils;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
+import com.github.timmyovo.pixeluitweaks.common.gui.InGameOverlays;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButton;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentCheckBox;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
@@ -192,7 +193,6 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
     }
 
     private void initConfigurations() {
-
         this.configurationManager = new ConfigurationManager(this);
         configurationManager.registerConfiguration("guiConfiguration", () -> new GuiConfiguration(Collections.singletonList(new GuiConfiguration.GuiEntry("example", true, exampleContainer()))));
         configurationManager.registerConfiguration("callbackConfiguration", () -> new CallbackConfiguration(ImmutableMap.of(UUID.randomUUID(), new CommandEntry(Collections.singletonList(new CommandEntry.SingleCommandEntry("exampleCommand", true, true))))));
@@ -264,10 +264,30 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                     }
 
                     Player finalPlayer = player;
+
                     getGuiConfiguration().getGuiEntryList().stream()
                             .filter(guiEntry -> guiEntry.getName().equalsIgnoreCase(strings[0]))
                             .forEach(guiEntry -> {
                                 PacketManager module = getModule(PacketManager.class);
+                                module.setPlayerOverlay(finalPlayer, InGameOverlays.builder()
+                                        .textureBinder(DynamicNetworkTextureBinder.newBuilder()
+                                                .withNetworkTextureName("test.png")
+                                                .build())
+                                        .renderMethod(RenderMethod.builder()
+                                                .entryList(Arrays.asList(
+                                                        RenderMethod.RenderEntry.builder()
+                                                                .xOffset("w / 2")
+                                                                .yOffset("h / 2")
+                                                                .scaledHeight("316")
+                                                                .scaledWidth("234")
+                                                                .textureHeight(316)
+                                                                .textureWidth(234)
+                                                                .textureX(0)
+                                                                .textureY(0)
+                                                                .build()
+                                                ))
+                                                .build())
+                                        .build());
                                 if (guiEntry.isSlotUI()) {
                                     module.openContainerScreen(finalPlayer, guiEntry.getGuiLayoutBase());
                                 } else {

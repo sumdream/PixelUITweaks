@@ -71,6 +71,7 @@ public class PacketManager implements IComp<PacketManager>, IGuiHandler {
         registerPacketIn(PacketTypes.RecvTexture.name(), new PacketInRecvTexture());
         registerPacketIn(PacketTypes.RemoveContainer.name(), new PacketInRemoveContainer());
         registerPacketIn(PacketTypes.UpdateCustomScoreboard.name(), new PacketUpdateOverlayListContent());
+        registerPacketIn(PacketTypes.UpdateGameOverlay.name(), new PacketInSetOverlays());
         return this;
     }
 
