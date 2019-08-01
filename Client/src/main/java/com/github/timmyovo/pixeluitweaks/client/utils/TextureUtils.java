@@ -52,7 +52,7 @@ public class TextureUtils {
                     URL url = new URL(string);
                     BufferedImage read = ImageIO.read(url);
                     if (read != null) {
-                        return new IDownloadTexture(read);
+                        return new IDownloadTexture(read, true);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -69,7 +69,11 @@ public class TextureUtils {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+
             if (iDownloadTexture != null) {
+                if (!iDownloadTexture.hasLoad()) {
+                    iDownloadTexture.load();
+                }
                 iDownloadTexture.bind();
             }
         }
