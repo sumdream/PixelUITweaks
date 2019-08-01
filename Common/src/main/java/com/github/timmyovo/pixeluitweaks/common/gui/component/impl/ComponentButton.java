@@ -15,6 +15,8 @@ import java.util.UUID;
 public class ComponentButton extends AbstractComponent {
     @SerializedName("displayString")
     protected String displayString;
+    @SerializedName("centered")
+    protected boolean centered;
 
     private ComponentButton(Builder builder) {
         setComponentId(builder.componentId);
