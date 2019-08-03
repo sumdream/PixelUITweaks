@@ -25,6 +25,7 @@ public class ComponentPicture extends AbstractComponent {
         setRenderMethod(builder.renderMethod);
         setTextureBinder(builder.textureBinder);
         setContentHover(builder.contentHover);
+        setItemRenderer(builder.itemRenderer);
         if (getComponentId() == null) {
             setComponentId(UUID.randomUUID());
         }
@@ -44,6 +45,7 @@ public class ComponentPicture extends AbstractComponent {
         private RenderMethod renderMethod;
         private TextureBinder textureBinder;
         private ContentHover contentHover;
+        private ItemRenderer itemRenderer;
 
         private Builder() {
         }
@@ -95,6 +97,56 @@ public class ComponentPicture extends AbstractComponent {
 
         public ComponentPicture build() {
             return new ComponentPicture(this);
+        }
+
+        public Builder componentId(UUID val) {
+            componentId = val;
+            return this;
+        }
+
+        public Builder xPos(String val) {
+            xPos = val;
+            return this;
+        }
+
+        public Builder yPos(String val) {
+            yPos = val;
+            return this;
+        }
+
+        public Builder height(String val) {
+            height = val;
+            return this;
+        }
+
+        public Builder width(String val) {
+            width = val;
+            return this;
+        }
+
+        public Builder visible(boolean val) {
+            visible = val;
+            return this;
+        }
+
+        public Builder renderMethod(RenderMethod val) {
+            renderMethod = val;
+            return this;
+        }
+
+        public Builder textureBinder(TextureBinder val) {
+            textureBinder = val;
+            return this;
+        }
+
+        public Builder contentHover(ContentHover val) {
+            contentHover = val;
+            return this;
+        }
+
+        public Builder itemRenderer(ItemRenderer val) {
+            itemRenderer = val;
+            return this;
         }
     }
 }

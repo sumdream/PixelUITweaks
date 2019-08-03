@@ -5,10 +5,12 @@ import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.gui.InGameOverlays;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentButton;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentCheckBox;
+import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentPicture;
 import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
 import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.Sidebar;
 import com.github.timmyovo.pixeluitweaks.common.gui.sidebar.SidebarType;
+import com.github.timmyovo.pixeluitweaks.common.render.ItemRenderer;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.DynamicNetworkTextureBinder;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
@@ -95,6 +97,20 @@ public class Examples {
                                 .withWidth("16")
                                 .withDisplayString("TestCheckBox")
                                 .withContentHover(new ContentHover(Arrays.asList("TestLine1", "TestLine2")))
+                                .build(),
+                        ComponentPicture.newBuilder()
+                                .withVisible(true)
+                                .withXPos("64")
+                                .withYPos("64")
+                                .withHeight("16")
+                                .withWidth("16")
+                                .itemRenderer(ItemRenderer.builder()
+                                        .itemName("minecraft:emerald")
+                                        .itemRendererMeta(ItemRenderer.ItemRendererMeta.builder()
+                                                .x("w/2")
+                                                .y("h/2")
+                                                .build())
+                                        .build())
                                 .build(),
                         ComponentSlot.newBuilder()
                                 .withVisible(true)

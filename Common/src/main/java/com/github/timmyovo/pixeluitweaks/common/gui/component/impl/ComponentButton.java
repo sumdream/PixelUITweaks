@@ -29,6 +29,7 @@ public class ComponentButton extends AbstractComponent {
         setTextureBinder(builder.textureBinder);
         setContentHover(builder.contentHover);
         setDisplayString(builder.displayString);
+        setCentered(builder.centered);
         if (getComponentId() == null) {
             setComponentId(UUID.randomUUID());
         }
@@ -50,6 +51,7 @@ public class ComponentButton extends AbstractComponent {
         private TextureBinder textureBinder;
         private ContentHover contentHover;
         private String displayString;
+        private boolean centered;
 
         private Builder() {
         }
@@ -106,6 +108,61 @@ public class ComponentButton extends AbstractComponent {
 
         public ComponentButton build() {
             return new ComponentButton(this);
+        }
+
+        public Builder componentId(UUID val) {
+            componentId = val;
+            return this;
+        }
+
+        public Builder xPos(String val) {
+            xPos = val;
+            return this;
+        }
+
+        public Builder yPos(String val) {
+            yPos = val;
+            return this;
+        }
+
+        public Builder height(String val) {
+            height = val;
+            return this;
+        }
+
+        public Builder width(String val) {
+            width = val;
+            return this;
+        }
+
+        public Builder visible(boolean val) {
+            visible = val;
+            return this;
+        }
+
+        public Builder renderMethod(RenderMethod val) {
+            renderMethod = val;
+            return this;
+        }
+
+        public Builder textureBinder(TextureBinder val) {
+            textureBinder = val;
+            return this;
+        }
+
+        public Builder contentHover(ContentHover val) {
+            contentHover = val;
+            return this;
+        }
+
+        public Builder displayString(String val) {
+            displayString = val;
+            return this;
+        }
+
+        public Builder centered(boolean val) {
+            centered = val;
+            return this;
         }
     }
 }
