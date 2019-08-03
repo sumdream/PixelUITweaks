@@ -21,16 +21,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class SlotUIScreen extends GuiContainer {
     private EntityPlayer owner;
     private List<ComponentContainer> componentContainerList;
-    private List<ClientComponentContainer> containers;
+    private Set<ClientComponentContainer> containers;
     private List<ClientComponent> clientComponents;
 
     public SlotUIScreen(EntityPlayer entityPlayer, ComponentContainer... guiContainers) {
@@ -47,9 +45,10 @@ public class SlotUIScreen extends GuiContainer {
         ));
         this.owner = entityPlayer;
         this.componentContainerList = Arrays.stream(guiContainers).collect(Collectors.toList());
-        this.containers = Arrays.stream(guiContainers)
+        this.containers = new HashSet<>();
+        this.containers.addAll(Arrays.stream(guiContainers)
                 .map(ClientComponentContainer::from)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
         for (ComponentContainer guiContainer : guiContainers) {
             addContainer(guiContainer);
         }

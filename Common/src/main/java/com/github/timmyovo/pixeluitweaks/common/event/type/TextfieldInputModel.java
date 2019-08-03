@@ -19,7 +19,7 @@ public class TextfieldInputModel implements ComponentEventModel<ComponentTextFie
 
     @Override
     public ComponentTextField getComponentModel() {
-        return getComponentTextField();
+        return componentTextField;
     }
 
     @Override

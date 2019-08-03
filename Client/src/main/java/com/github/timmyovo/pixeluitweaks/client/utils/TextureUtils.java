@@ -8,6 +8,7 @@ import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.LocalTexture
 import com.github.timmyovo.pixeluitweaks.common.render.texture.impl.WebTextureBinder;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -52,7 +53,7 @@ public class TextureUtils {
                     URL url = new URL(string);
                     BufferedImage read = ImageIO.read(url);
                     if (read != null) {
-                        return new IDownloadTexture(read);
+                        return new IDownloadTexture(read, true);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -69,9 +70,15 @@ public class TextureUtils {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+
             if (iDownloadTexture != null) {
+                if (!iDownloadTexture.hasLoad()) {
+                    iDownloadTexture.load();
+                }
                 iDownloadTexture.bind();
             }
+        } else {
+            GlStateManager.bindTexture(0);
         }
 
     }

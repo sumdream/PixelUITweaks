@@ -10,16 +10,27 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.zip.GZIPInputStream;
 
 public class PacketInRecvTexture implements IPacketIn {
     @Override
     public void readPacket(PacketBuffer packetBuffer) {
         Minecraft.getMinecraft().addScheduledTask(() -> {
             String name = packetBuffer.readString(32);
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(packetBuffer.readByteArray());
+            byte[] buf = packetBuffer.readByteArray();
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(buf);
+            GZIPInputStream gzipInputStream = null;
+            try {
+                gzipInputStream = new GZIPInputStream(byteArrayInputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (gzipInputStream == null) {
+                return;
+            }
             BufferedImage bufferedImage = null;
             try {
-                bufferedImage = ImageIO.read(byteArrayInputStream);
+                bufferedImage = ImageIO.read(gzipInputStream);
                 byteArrayInputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();

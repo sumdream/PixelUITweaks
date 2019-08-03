@@ -11,15 +11,26 @@ import static org.lwjgl.opengl.GL11.*;
 
 @Data
 public class IDownloadTexture {
-
+    private BufferedImage bufferedImage;
     private int width, height;
     private int texture;
 
     public IDownloadTexture(BufferedImage bufferedImage) {
-        texture = load(bufferedImage);
+        this(bufferedImage, false);
     }
 
-    public int load(BufferedImage bufferedImage) {
+    public IDownloadTexture(BufferedImage bufferedImage, boolean disableLoad) {
+        this.bufferedImage = bufferedImage;
+        if (!disableLoad) {
+            texture = load();
+        }
+    }
+
+    public boolean hasLoad() {
+        return texture != 0;
+    }
+
+    public int load() {
         int[] pixels = null;
         width = bufferedImage.getWidth();
         height = bufferedImage.getHeight();
@@ -48,6 +59,7 @@ public class IDownloadTexture {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
                 GL_UNSIGNED_BYTE, buffer);
         glBindTexture(GL_TEXTURE_2D, 0);
+        texture = result;
         return result;
     }
 

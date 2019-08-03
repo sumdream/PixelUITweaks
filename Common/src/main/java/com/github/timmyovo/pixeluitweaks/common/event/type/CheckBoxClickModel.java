@@ -20,7 +20,7 @@ public class CheckBoxClickModel implements ComponentEventModel<ComponentCheckBox
 
     @Override
     public ComponentCheckBox getComponentModel() {
-        return null;
+        return componentCheckBox;
     }
 
     @Override
