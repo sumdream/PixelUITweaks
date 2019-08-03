@@ -107,7 +107,7 @@ public class GuiButtonImpl extends Gui implements ClientComponent<ComponentButto
             if (componentButton.isCentered()) {
                 this.drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
             } else {
-                this.drawString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
+                this.drawString(fontrenderer, this.displayString, this.x + 3, this.y + (this.height - 8) / 2, j);
             }
 
         }
