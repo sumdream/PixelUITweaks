@@ -149,8 +149,13 @@ public class SlotUIScreen extends GuiContainer {
                         .typedChar(typedChar)
                         .build())
                 .build());
-        if (keyCode == Keyboard.KEY_E) {
-            return;
+        if (clientComponents.stream()
+                .filter(clientComponent -> clientComponent instanceof GuiTextFieldImpl)
+                .map(clientComponent -> ((GuiTextFieldImpl) clientComponent))
+                .anyMatch(guiTextField -> guiTextField.isFocused())) {
+            if (keyCode == Keyboard.KEY_E) {
+                return;
+            }
         }
         super.keyTyped(typedChar, keyCode);
     }
