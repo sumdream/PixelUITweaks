@@ -31,22 +31,22 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     maven {
-        url "https://work.ymmclt.com/nexus/repository/maven-central/"
+        url "https://repo1.maven.org/maven2/"
     }
     maven {
-        url "https://work.ymmclt.com/nexus/repository/spigot/"
+        url "https://hub.spigotmc.org/nexus/content/groups/public/"
     }
     maven {
-        url "https://work.ymmclt.com/nexus/repository/nexus/"
+        url "https://oss.sonatype.org/content/groups/public/"
     }
     maven {
-        url "https://work.ymmclt.com/nexus/repository/maven-public/"
+        url "https://git.souep.cn/nexus/repository/maven-public/"
     }
     maven {
-        url "https://work.ymmclt.com/nexus/repository/placeholderapi/"
+        url "http://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
     maven {
-        url "https://work.ymmclt.com/nexus/repository/hackerzlair/"
+        url "http://mc.hackerzlair.org:8888/repository/public"
     }
 }
 
@@ -61,7 +61,7 @@ configurations.all {
 
 dependencies {
     shade project(path: ':Common', configuration: 'default')
-    implementation group: 'com.github.skystardust', name: 'UltraCore-Bukkit', version: '4.4-SNAPSHOT'
+    implementation group: 'com.github.skystardust', name: 'UltraCore-Bukkit', version: '4.2-SNAPSHOT'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
     compile fileTree(dir: "libs", includes: ["*.jar"])
