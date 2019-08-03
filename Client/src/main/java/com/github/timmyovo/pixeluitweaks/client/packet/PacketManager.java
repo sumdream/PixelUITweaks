@@ -1,12 +1,10 @@
 package com.github.timmyovo.pixeluitweaks.client.packet;
 
-import com.github.timmyovo.pixeluitweaks.client.gui.CommonUIScreen;
 import com.github.timmyovo.pixeluitweaks.client.gui.SlotUIScreen;
 import com.github.timmyovo.pixeluitweaks.client.packet.in.*;
 import com.github.timmyovo.pixeluitweaks.client.packet.manager.LocalDataManager;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
 import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
-import com.github.timmyovo.pixeluitweaks.common.gui.component.impl.ComponentSlot;
 import com.github.timmyovo.pixeluitweaks.common.packet.PacketTypes;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
@@ -93,12 +91,7 @@ public class PacketManager implements IComp<PacketManager>, IGuiHandler {
         if (optionalComponentContainer
                 .isPresent()) {
             ComponentContainer componentContainer = optionalComponentContainer.get();
-            if (componentContainer.getComponentList()
-                    .stream()
-                    .anyMatch(abstractComponent -> abstractComponent instanceof ComponentSlot)) {
-                return new SlotUIScreen(player, componentContainer);
-            }
-            return new CommonUIScreen(player, componentContainer);
+            return new SlotUIScreen(player, componentContainer);
         }
 
         return null;

@@ -31,9 +31,7 @@ public class GuiPictureImpl extends Gui implements ClientComponent<ComponentPict
                 TextureUtils.tryBindTexture(componentPicture.getTextureBinder());
             }
             if (componentPicture.getRenderMethod() != null) {
-                for (ClientRenderMethod.ClientRenderEntry renderEntry : clientRenderMethod.getEntryList()) {
-                    drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight());
-                }
+                clientRenderMethod.render();
             }
             if (clientItemRenderer != null) {
                 clientItemRenderer.render();

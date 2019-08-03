@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.util.List;
@@ -23,6 +25,10 @@ public class ClientRenderMethod {
 
     public static ClientRenderMethod fromRenderMethod(RenderMethod renderMethod) {
         return new ClientRenderMethod(renderMethod.getEntryList().stream().map(ClientRenderEntry::fromRenderEntry).collect(Collectors.toList()));
+    }
+
+    public void render() {
+        getEntryList().forEach(ClientRenderEntry::render);
     }
 
     @Data
@@ -64,13 +70,25 @@ public class ClientRenderMethod {
                     .setVariable("w", scaledWidth)
                     .setVariable("h", scaledHeight)
                     .evaluate();
-            int tileWidth = (int) new ExpressionBuilder(renderEntry.getScaledWidth())
+            int tileWidth = (int) new ExpressionBuilder(renderEntry.getTextureWidth())
                     .variables("w", "h")
                     .build()
                     .setVariable("w", scaledWidth)
                     .setVariable("h", scaledHeight)
                     .evaluate();
-            int tileHeight = (int) new ExpressionBuilder(renderEntry.getScaledHeight())
+            int tileHeight = (int) new ExpressionBuilder(renderEntry.getTextureHeight())
+                    .variables("w", "h")
+                    .build()
+                    .setVariable("w", scaledWidth)
+                    .setVariable("h", scaledHeight)
+                    .evaluate();
+            int scaledHeightL = (int) new ExpressionBuilder(renderEntry.getScaledHeight())
+                    .variables("w", "h")
+                    .build()
+                    .setVariable("w", scaledWidth)
+                    .setVariable("h", scaledHeight)
+                    .evaluate();
+            int scaledWidthL = (int) new ExpressionBuilder(renderEntry.getScaledWidth())
                     .variables("w", "h")
                     .build()
                     .setVariable("w", scaledWidth)
@@ -81,11 +99,19 @@ public class ClientRenderMethod {
                     .yOffset(y)
                     .textureX(renderEntry.getTextureX())
                     .textureY(renderEntry.getTextureY())
-                    .textureHeight(renderEntry.getTextureHeight())
-                    .textureWidth(renderEntry.getTextureWidth())
-                    .scaledHeight(tileHeight)
-                    .scaledWidth(tileWidth)
+                    .textureHeight(tileHeight)
+                    .textureWidth(tileWidth)
+                    .scaledHeight(scaledHeightL)
+                    .scaledWidth(scaledWidthL)
                     .build();
+        }
+
+        public void render() {
+            ClientRenderEntry renderEntry = this;
+            GlStateManager.color(1, 1, 1, 1);
+            GlStateManager.enableBlend();
+            Gui.drawModalRectWithCustomSizedTexture(renderEntry.getXOffset(), renderEntry.getYOffset(), renderEntry.getTextureX(), renderEntry.getTextureY(), renderEntry.getTextureWidth(), renderEntry.getTextureHeight(), renderEntry.getScaledWidth(), renderEntry.getScaledHeight());
+            GlStateManager.disableBlend();
         }
     }
 }

@@ -79,25 +79,27 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
         uiCommandInit();
         readSidebar();
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL, new EventListener());
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            try {
-                FileSystem fs = FileSystems.getDefault();
-                WatchService ws = fs.newWatchService();
-                Path pTemp = Paths.get(getDataFolder().getPath());
-                pTemp.register(ws, new WatchEvent.Kind[]{ENTRY_MODIFY, ENTRY_CREATE, ENTRY_DELETE}, FILE_TREE);
-                WatchKey k = ws.take();
-                List<WatchEvent<?>> watchEvents = k.pollEvents();
 
-                if (watchEvents.stream()
-                        .anyMatch(watchEvent -> watchEvent.kind().equals(ENTRY_MODIFY))) {
-                    configurationManager.reloadFiles();
-                    return;
+        try {
+            FileSystem fs = FileSystems.getDefault();
+            WatchService ws = fs.newWatchService();
+            Path pTemp = Paths.get(getDataFolder().getPath());
+            pTemp.register(ws, new WatchEvent.Kind[]{ENTRY_MODIFY, ENTRY_CREATE, ENTRY_DELETE}, FILE_TREE);
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+                try {
+                    WatchKey k = ws.take();
+                    if (!k.pollEvents().isEmpty()) {
+                        configurationManager.reloadFiles();
+                    }
+                    k.reset();
+                } catch (InterruptedException | ConfigurationException e) {
+                    e.printStackTrace();
                 }
-                k.reset();
-            } catch (IOException | InterruptedException | ConfigurationException e) {
-                e.printStackTrace();
-            }
-        }, 0L, 10L);
+            }, 0L, 10L);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

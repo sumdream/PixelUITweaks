@@ -30,9 +30,9 @@ public class RenderMethod {
         @SerializedName("textureY")
         private int textureY;
         @SerializedName("textureWidth")
-        private int textureWidth;
+        private String textureWidth;
         @SerializedName("textureHeight")
-        private int textureHeight;
+        private String textureHeight;
         @SerializedName("scaledWidth")
         private String scaledWidth;
         @SerializedName("scaledHeight")
