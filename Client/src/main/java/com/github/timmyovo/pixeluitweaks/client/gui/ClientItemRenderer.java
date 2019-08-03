@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -39,7 +40,8 @@ public class ClientItemRenderer {
     }
 
     public void render() {
-        RenderHelper.disableStandardItemLighting();
+        GlStateManager.enableBlend();
+        RenderHelper.enableGUIStandardItemLighting();
         Minecraft.getMinecraft().getRenderItem().renderItemIntoGUI(itemName, itemRendererMeta.x, itemRendererMeta.y);
     }
 
