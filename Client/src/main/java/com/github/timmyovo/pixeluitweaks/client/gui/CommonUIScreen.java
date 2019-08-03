@@ -125,6 +125,7 @@ public class CommonUIScreen extends GuiScreen {
     @Override
     public void setWorldAndResolution(Minecraft mc, int width, int height) {
         super.setWorldAndResolution(mc, width, height);
+        updateClientComponents();
     }
 
     @Override
@@ -145,8 +146,13 @@ public class CommonUIScreen extends GuiScreen {
                         .typedChar(typedChar)
                         .build())
                 .build());
-        if (keyCode == Keyboard.KEY_E) {
-            return;
+        if (clientComponents.stream()
+                .filter(clientComponent -> clientComponent instanceof GuiTextFieldImpl)
+                .map(clientComponent -> ((GuiTextFieldImpl) clientComponent))
+                .anyMatch(GuiTextFieldImpl::isFocused)) {
+            if (keyCode == Keyboard.KEY_E) {
+                return;
+            }
         }
         super.keyTyped(typedChar, keyCode);
     }

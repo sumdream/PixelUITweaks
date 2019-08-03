@@ -40,13 +40,13 @@ repositories {
         url "https://oss.sonatype.org/content/groups/public/"
     }
     maven {
-        url "https://git.souep.cn/nexus/repository/maven-public/"
-    }
-    maven {
         url "http://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
     maven {
         url "http://mc.hackerzlair.org:8888/repository/public"
+    }
+    maven {
+        url "https://git.souep.cn/nexus/repository/maven-public/"
     }
 }
 

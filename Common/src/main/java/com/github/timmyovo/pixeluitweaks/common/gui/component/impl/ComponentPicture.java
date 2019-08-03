@@ -2,12 +2,18 @@ package com.github.timmyovo.pixeluitweaks.common.gui.component.impl;
 
 import com.github.timmyovo.pixeluitweaks.common.gui.component.AbstractComponent;
 import com.github.timmyovo.pixeluitweaks.common.gui.hover.ContentHover;
+import com.github.timmyovo.pixeluitweaks.common.render.ItemRenderer;
 import com.github.timmyovo.pixeluitweaks.common.render.RenderMethod;
 import com.github.timmyovo.pixeluitweaks.common.render.texture.TextureBinder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
+@Getter
+@Setter
 public class ComponentPicture extends AbstractComponent {
+    private ItemRenderer itemRenderer;
 
     private ComponentPicture(Builder builder) {
         setComponentId(builder.componentId);
