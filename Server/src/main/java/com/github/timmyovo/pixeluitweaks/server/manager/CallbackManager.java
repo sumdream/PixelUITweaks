@@ -19,6 +19,10 @@ public class CallbackManager implements IComp<CallbackManager> {
         componentEventCallbackMap.put(abstractComponent.getComponentId(), consumer);
     }
 
+    public void registerCommonCallback(Class eventTypeClass, Consumer<EventModel> eventModelConsumer) {
+        this.commonEventCallbackMap.put(eventTypeClass, eventModelConsumer);
+    }
+
     public void notifyComponentEvent(ComponentEventModel componentEventModel) {
         componentEventCallbackMap.entrySet()
                 .stream()
