@@ -41,7 +41,7 @@ public class GuiPictureImpl extends Gui implements ClientComponent<ComponentPict
                 clientRenderMethod.render();
             }
             if (clientItemRenderer != null) {
-                clientItemRenderer.render();
+                clientItemRenderer.render(ticks);
             }
         }
     }

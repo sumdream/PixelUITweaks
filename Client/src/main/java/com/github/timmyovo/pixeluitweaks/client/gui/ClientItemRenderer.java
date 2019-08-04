@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,10 +40,34 @@ public class ClientItemRenderer {
                 .build();
     }
 
-    public void render() {
-        GlStateManager.enableBlend();
-        RenderHelper.enableGUIStandardItemLighting();
-        Minecraft.getMinecraft().getRenderItem().renderItemIntoGUI(itemName, itemRendererMeta.x, itemRendererMeta.y);
+    public void render(float partialTicks) {
+        Minecraft minecraft = Minecraft.getMinecraft();
+        //renderHotbarItem(itemRendererMeta.x,itemRendererMeta.y,partialTicks,minecraft.player,itemName);
+        renderHotbarItem(itemRendererMeta.x, itemRendererMeta.y, partialTicks, minecraft.player, itemName);
+    }
+
+    protected void renderHotbarItem(int x, int y, float partialTicks, EntityPlayer player, ItemStack stack) {
+        Minecraft minecraft = Minecraft.getMinecraft();
+        RenderItem renderItem = minecraft.getRenderItem();
+        if (!stack.isEmpty()) {
+            float f = (float) stack.getAnimationsToGo() - partialTicks;
+            GlStateManager.enableLighting();
+            if (f > 0.0F) {
+                GlStateManager.pushMatrix();
+                float f1 = 1.0F + f / 5.0F;
+                GlStateManager.translate((float) (x + 8), (float) (y + 12), 0.0F);
+                GlStateManager.scale(1.0F / f1, (f1 + 1.0F) / 2.0F, 1.0F);
+                GlStateManager.translate((float) (-(x + 8)), (float) (-(y + 12)), 0.0F);
+            }
+
+            renderItem.renderItemAndEffectIntoGUI(player, stack, x, y);
+
+            if (f > 0.0F) {
+                GlStateManager.popMatrix();
+            }
+
+            renderItem.renderItemOverlays(minecraft.fontRenderer, stack, x, y);
+        }
     }
 
     @Data

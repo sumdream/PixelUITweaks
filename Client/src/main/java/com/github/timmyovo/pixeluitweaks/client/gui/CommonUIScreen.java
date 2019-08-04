@@ -106,7 +106,6 @@ public class CommonUIScreen extends GuiScreen {
                 if (!(abstractComponent instanceof ComponentSlot)) {
                     clientComponents.forEach(clientComponent -> {
                         clientComponent.render(mouseX, mouseY, partialTicks);
-
                     });
                     clientComponents.forEach(clientComponent -> {
                         ContentHover contentHover = clientComponent.getComponentModel().getContentHover();
