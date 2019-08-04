@@ -6,10 +6,12 @@ import com.github.skystardust.ultracore.core.configuration.ConfigurationManager;
 import com.github.skystardust.ultracore.core.exceptions.ConfigurationException;
 import com.github.skystardust.ultracore.core.utils.FileUtils;
 import com.github.timmyovo.pixeluitweaks.common.api.IComp;
+import com.github.timmyovo.pixeluitweaks.common.gui.ComponentContainer;
 import com.github.timmyovo.pixeluitweaks.common.message.GuiFactory;
 import com.github.timmyovo.pixeluitweaks.server.config.*;
 import com.github.timmyovo.pixeluitweaks.server.listener.EventListener;
 import com.github.timmyovo.pixeluitweaks.server.manager.CallbackManager;
+import com.github.timmyovo.pixeluitweaks.server.manager.PlayerStateManager;
 import com.github.timmyovo.pixeluitweaks.server.packet.PacketManager;
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
@@ -27,10 +29,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static com.sun.nio.file.ExtendedWatchEventModifier.FILE_TREE;
@@ -90,6 +89,17 @@ public final class PixelUITweaksServer extends JavaPlugin implements PluginInsta
                     WatchKey k = ws.take();
                     if (!k.pollEvents().isEmpty()) {
                         configurationManager.reloadFiles();
+                        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                            Optional<List<ComponentContainer>> playerCurrentContainers = PlayerStateManager.getPlayerCurrentContainers(onlinePlayer);
+                            if (playerCurrentContainers.isPresent()) {
+                                if (guiConfiguration == null) {
+                                    configurationManager.reloadFiles();
+                                }
+                                List<GuiConfiguration.GuiEntry> guiEntryList = guiConfiguration.getGuiEntryList();
+                                GuiConfiguration.GuiEntry guiEntry = guiEntryList.get(0);
+                                getModule(PacketManager.class).openScreen(onlinePlayer, guiEntry.getGuiLayoutBase());
+                            }
+                        }
                     }
                     k.reset();
                 } catch (InterruptedException | ConfigurationException e) {
