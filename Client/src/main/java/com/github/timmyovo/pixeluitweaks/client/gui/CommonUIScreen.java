@@ -83,6 +83,10 @@ public class CommonUIScreen extends GuiScreen {
                     clientComponents.add(new GuiTextFieldImpl(((ComponentTextField) abstractComponent)));
                     return;
                 }
+                if (abstractComponent instanceof ComponentEntityRenderer) {
+                    clientComponents.add(new GuiEntityRendererImpl(((ComponentEntityRenderer) abstractComponent)));
+                    return;
+                }
             });
         }
     }

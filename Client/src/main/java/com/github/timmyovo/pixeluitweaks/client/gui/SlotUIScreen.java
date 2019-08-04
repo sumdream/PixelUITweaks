@@ -93,12 +93,18 @@ public class SlotUIScreen extends GuiContainer {
                 }
                 if (abstractComponent instanceof ComponentPicture) {
                     clientComponents.add(new GuiPictureImpl(((ComponentPicture) abstractComponent)));
+                    return;
                 }
                 if (abstractComponent instanceof ComponentCheckBox) {
                     clientComponents.add(new GuiCheckBoxImpl(((ComponentCheckBox) abstractComponent)));
+                    return;
                 }
                 if (abstractComponent instanceof ComponentTextField) {
                     clientComponents.add(new GuiTextFieldImpl(((ComponentTextField) abstractComponent)));
+                    return;
+                }
+                if (abstractComponent instanceof ComponentEntityRenderer) {
+                    clientComponents.add(new GuiEntityRendererImpl(((ComponentEntityRenderer) abstractComponent)));
                 }
             });
         }

@@ -10,6 +10,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.objecthunter.exp4j.ExpressionBuilder;
+import org.lwjgl.opengl.GL11;
 
 @Getter
 @Setter
@@ -41,16 +42,47 @@ public class GuiLabelImpl extends Gui implements ClientComponent<ComponentLabel>
             int i = this.y + this.height / 2 + this.border / 2;
             int j = i - this.componentLabel.getLabels().size() * 10 / 2;
             this.hovered = mouseX >= x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-            for (int k = 0; k < this.componentLabel.getLabels().size(); ++k) {
-                if (this.centered) {
-                    this.drawCenteredString(this.fontRenderer, this.componentLabel.getLabels().get(k), this.x + this.width / 2, j + k * 10, this.textColor);
-                    GlStateManager.color(1, 1, 1, 1);
-                } else {
-                    this.drawString(this.fontRenderer, this.componentLabel.getLabels().get(k), this.x, j + k * 10, this.textColor);
-                    GlStateManager.color(1, 1, 1, 1);
+            float scaledSize = componentLabel.getScaledSize();
+            if (scaledSize != 0) {
+                for (int k = 0; k < this.componentLabel.getLabels().size(); ++k) {
+                    if (this.centered) {
+                        this.drawCenteredStringScaled(this.componentLabel.getLabels().get(k), this.x + this.width / 2, j + k * 10, this.textColor, scaledSize);
+                        GlStateManager.color(1, 1, 1, 1);
+                    } else {
+                        this.drawStringScaled(this.componentLabel.getLabels().get(k), this.x, j + k * 10, this.textColor, scaledSize);
+                        GlStateManager.color(1, 1, 1, 1);
+                    }
+
+                }
+            } else {
+                for (int k = 0; k < this.componentLabel.getLabels().size(); ++k) {
+                    if (this.centered) {
+                        this.drawCenteredString(this.fontRenderer, this.componentLabel.getLabels().get(k), this.x + this.width / 2, j + k * 10, this.textColor);
+                        GlStateManager.color(1, 1, 1, 1);
+                    } else {
+                        this.drawString(this.fontRenderer, this.componentLabel.getLabels().get(k), this.x, j + k * 10, this.textColor);
+                        GlStateManager.color(1, 1, 1, 1);
+                    }
+
                 }
             }
+
         }
+    }
+
+    public void drawStringScaled(String text, int x, int y, int color, float size) {
+        GL11.glScalef(size, size, size);
+        float pow = (float) Math.pow((double) size, -1.0D);
+        this.fontRenderer.drawStringWithShadow(text, (float) Math.round((float) x / size), (float) Math.round((float) y / size), color);
+        GL11.glScalef(pow, pow, pow);
+    }
+
+
+    public void drawCenteredStringScaled(String text, int x, int y, int color, float size) {
+        GL11.glScalef(size, size, size);
+        float pow = (float) Math.pow((double) size, -1.0D);
+        this.fontRenderer.drawStringWithShadow(text, (float) (x - fontRenderer.getStringWidth(text) / 2), (float) y, color);
+        GL11.glScalef(pow, pow, pow);
     }
 
     @Override

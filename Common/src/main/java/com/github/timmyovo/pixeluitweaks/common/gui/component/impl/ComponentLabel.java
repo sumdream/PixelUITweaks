@@ -20,6 +20,8 @@ public class ComponentLabel extends AbstractComponent {
     protected int textColor;
     @SerializedName("border")
     private int border;
+    @SerializedName("scaledSize")
+    private float scaledSize;
     @SerializedName("labels")
     private List<String> labels;
 
@@ -36,6 +38,7 @@ public class ComponentLabel extends AbstractComponent {
         setCentered(builder.centered);
         setTextColor(builder.textColor);
         setBorder(builder.border);
+        setScaledSize(builder.scaledSize);
         setLabels(builder.labels);
         if (getComponentId() == null) {
             setComponentId(UUID.randomUUID());
@@ -59,6 +62,7 @@ public class ComponentLabel extends AbstractComponent {
         private boolean centered;
         private int textColor;
         private int border;
+        private float scaledSize;
         private List<String> labels;
 
         private Builder() {
@@ -131,6 +135,76 @@ public class ComponentLabel extends AbstractComponent {
 
         public ComponentLabel build() {
             return new ComponentLabel(this);
+        }
+
+        public Builder componentId(UUID val) {
+            componentId = val;
+            return this;
+        }
+
+        public Builder xPos(String val) {
+            xPos = val;
+            return this;
+        }
+
+        public Builder yPos(String val) {
+            yPos = val;
+            return this;
+        }
+
+        public Builder height(String val) {
+            height = val;
+            return this;
+        }
+
+        public Builder width(String val) {
+            width = val;
+            return this;
+        }
+
+        public Builder visible(boolean val) {
+            visible = val;
+            return this;
+        }
+
+        public Builder renderMethod(RenderMethod val) {
+            renderMethod = val;
+            return this;
+        }
+
+        public Builder textureBinder(TextureBinder val) {
+            textureBinder = val;
+            return this;
+        }
+
+        public Builder contentHover(ContentHover val) {
+            contentHover = val;
+            return this;
+        }
+
+        public Builder centered(boolean val) {
+            centered = val;
+            return this;
+        }
+
+        public Builder textColor(int val) {
+            textColor = val;
+            return this;
+        }
+
+        public Builder border(int val) {
+            border = val;
+            return this;
+        }
+
+        public Builder scaledSize(float val) {
+            scaledSize = val;
+            return this;
+        }
+
+        public Builder labels(List<String> val) {
+            labels = val;
+            return this;
         }
     }
 }

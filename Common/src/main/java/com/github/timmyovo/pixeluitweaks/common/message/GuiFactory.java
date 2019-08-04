@@ -16,7 +16,6 @@ import com.google.gson.GsonBuilder;
 
 public class GuiFactory {
     public static Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
             .registerTypeAdapterFactory(
                     RuntimeTypeAdapter.of(AbstractComponent.class, "type")
                             .registerSubtype(ComponentListContent.class, GuiComponents.LIST_CONTENT.name())
@@ -26,6 +25,7 @@ public class GuiFactory {
                             .registerSubtype(ComponentButton.class, GuiComponents.BUTTON.name())
                             .registerSubtype(ComponentCheckBox.class, GuiComponents.CHECKBOX.name())
                             .registerSubtype(ComponentPicture.class, GuiComponents.PICTURE.name())
+                            .registerSubtype(ComponentEntityRenderer.class, GuiComponents.ENTITY_RENDERER.name())
             )
             .registerTypeAdapterFactory(
                     RuntimeTypeAdapter.of(TextureBinder.class, "type")
