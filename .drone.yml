@@ -7,7 +7,7 @@ pipeline:
     image: plugins/gitea-release
     api_key:
       from_secret: "KEY"
-    base_url: https://git.souep.cn/TimmyOVO/PixelUITweaks
+    base_url: https://git.souep.cn/git/TimmyOVO/PixelUITweaks
     files:
       - build/libs/*.jar
     when:
