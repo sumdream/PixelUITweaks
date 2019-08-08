@@ -18,7 +18,6 @@ public class PacketInRecvTexture implements IPacketIn {
 
     private static byte[] combineByteArray(byte[] b1, byte[] b2) {
         byte[] combined = new byte[b1.length + b2.length];
-
         System.arraycopy(b1, 0, combined, 0, b1.length);
         System.arraycopy(b2, 0, combined, b1.length, b2.length);
         return combined;
